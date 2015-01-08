@@ -21,7 +21,6 @@ OTHER_FILES += qml/harbour-phototools.qml \
     rpm/harbour-phototools.changes.in \
     rpm/harbour-phototools.spec \
     rpm/harbour-phototools.yaml \
-    translations/*.ts \
     harbour-phototools.desktop \
     qml/pages/DepthOfField.qml
 
