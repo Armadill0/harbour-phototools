@@ -9,13 +9,29 @@
     </message>
 </context>
 <context>
-    <name>DepthOfField</name>
+    <name>DepthOfFieldPage</name>
     <message>
-        <source>Show Page 2</source>
+        <source>Calculating depth of field</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Depth of field</source>
+        <source>Sensor specifications</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Crop factor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Format</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Resolution (mpix)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Lens data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -23,15 +39,15 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Sensor format</source>
+        <source>Focal length (mm)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Sensor resolution (megapixels)</source>
+        <source>Object distance (m)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Crop factor</source>
+        <source>Results</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

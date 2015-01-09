@@ -37,11 +37,15 @@ ApplicationWindow
     id: photoToolsWindow
 
     // list of available aperture values
-    property variant dopAperturesDouble: [1,1.1,1.2,1.4,1.6,1.8,2,2.2,2.5,2.8,3.2,3.5,4,4.5,5.0,5.6,6.3,7.1,8,9,10,11,13,14,16,18,20,22,25,29,32,36,40,45]
+    property variant dopAperturesDouble: [1, 1.1, 1.2, 1.4, 1.6, 1.8, 2, 2.2, 2.5, 2.8, 3.2, 3.5, 4, 4.5, 5.0, 5.6, 6.3, 7.1, 8, 9, 10, 11, 13, 14, 16, 18, 20, 22, 25, 29, 32, 36, 40, 45]
     // list of default crop factors
-    property variant dopCropFactorsDouble: [0.7, 0.8, 1, 1.3, 1.5, 1.6, 2, 2.38, 2.7, 4, 4.5, 4.9, 5.6, 6.2, 6.8, 7.2, 8, 8.7]
+    property variant dopCropFactorsDouble: [0.7, 0.8, 1, 1.2, 1.3, 1.5, 1.6, 2, 2.38, 2.7, 4, 4.5, 4.9, 5.6, 6.2, 6.8, 7.2, 8, 8.7]
+    // list of the products from the sensor format multiplicants
+    // this is needed to calculate the
+    property variant dopSensorFormatProducts: [1, 6, 12]
+    property variant dopSensorFormatHorizontals: [1, 3, 4]
 
-    initialPage: Component { DepthOfField { } }
+    initialPage: Component { DepthOfFieldPage { } }
     cover: Qt.resolvedUrl("pages/CoverPage.qml")
 }
 

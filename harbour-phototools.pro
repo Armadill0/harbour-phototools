@@ -22,7 +22,7 @@ OTHER_FILES += qml/harbour-phototools.qml \
     rpm/harbour-phototools.spec \
     rpm/harbour-phototools.yaml \
     harbour-phototools.desktop \
-    qml/pages/DepthOfField.qml
+    qml/pages/DepthOfFieldPage.qml
 
 # to disable building translations every time, comment out the
 # following CONFIG line
