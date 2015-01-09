@@ -63,6 +63,38 @@ Page {
                 title: qsTr("Calculating depth of field")
             }
 
+            Row {
+                width: parent.width
+
+                Rectangle {
+                    width: depthOfField / (depthOfField + nearPoint) * parent.width
+                    height: displayDop.height
+                    color: "orange"
+
+                    Rectangle {
+                        width: 1
+                        height: displayDop.height
+                        anchors.right: parent.right
+                        anchors.rightMargin: (objectDistance - nearPoint) / depthOfField * parent.width
+                        color: "red"
+                    }
+                }
+
+                Rectangle {
+                    width: nearPoint / (depthOfField + nearPoint) * parent.width
+                    height: displayDop.height
+                    color: "lightblue"
+
+                    Label {
+                        id: displayDop
+                        anchors.right: parent.right
+                        text: dopNearPoint.text
+                        horizontalAlignment: Text.AlignRight
+                        color: "black"
+                    }
+                }
+            }
+
             SectionHeader {
                 text: qsTr("Sensor specifications")
             }
