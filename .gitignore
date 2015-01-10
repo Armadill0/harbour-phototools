@@ -1,2 +1,4 @@
 harbour-phototools.pro.user
 rpm/harbour-phototools.spec
+RPMS/
+Makefile

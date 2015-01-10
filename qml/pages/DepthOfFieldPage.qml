@@ -1,39 +1,29 @@
 /*
-  Copyright (C) 2013 Jolla Ltd.
-  Contact: Thomas Perl <thomas.perl@jollamobile.com>
+  Copyright (C) 2014 Thomas Amler
+  Contact: Thomas Amler <armadillo@penguinfriends.org>
   All rights reserved.
 
-  You may use this file under the terms of BSD license as follows:
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
 
-  Redistribution and use in source and binary forms, with or without
-  modification, are permitted provided that the following conditions are met:
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
-    * Redistributions in binary form must reproduce the above copyright
-      notice, this list of conditions and the following disclaimer in the
-      documentation and/or other materials provided with the distribution.
-    * Neither the name of the Jolla Ltd nor the
-      names of its contributors may be used to endorse or promote products
-      derived from this software without specific prior written permission.
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
 
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-  DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDERS OR CONTRIBUTORS BE LIABLE FOR
-  ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-  (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-  LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
-  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import QtQuick 2.0
+import QtQuick 2.1
 import Sailfish.Silica 1.0
 
 
 Page {
-    id: page
+    id: depthOfFieldPage
+    allowedOrientations: Orientation.All
 
     property double aperture: photoToolsWindow.dopAperturesDouble[dopAperture.value]
     property double sensorFormatProduct: photoToolsWindow.dopSensorFormatProducts[dopSensorFormat.currentIndex]
@@ -54,13 +44,27 @@ Page {
         anchors.fill: parent
         contentHeight: column.height
 
+        VerticalScrollDecorator { }
+
+        PushUpMenu {
+            MenuItem {
+                //: menu item to jump to the application information page
+                text: qsTr("About") + " PhotoTools"
+                onClicked: pageStack.push(Qt.resolvedUrl("AboutPage.qml"))
+            }
+        }
+
         Column {
             id: column
 
-            width: page.width
+            width: depthOfFieldPage.width
             spacing: Theme.paddingSmall
             PageHeader {
-                title: qsTr("Calculating depth of field")
+                title: qsTr("Depth of field") + " - PhotoTools"
+            }
+
+            SectionHeader {
+                text: qsTr("Results")
             }
 
             Row {
@@ -69,13 +73,13 @@ Page {
                 Rectangle {
                     width: depthOfField / (depthOfField + nearPoint) * parent.width
                     height: displayDop.height
-                    color: "orange"
+                    color: Theme.highlightColor
 
                     Rectangle {
-                        width: 1
+                        width: 2
                         height: displayDop.height
                         anchors.right: parent.right
-                        anchors.rightMargin: (objectDistance - nearPoint) / depthOfField * parent.width
+                        anchors.rightMargin: (objectDistance - nearPoint) / depthOfField * parent.width -1
                         color: "red"
                     }
                 }
@@ -83,61 +87,75 @@ Page {
                 Rectangle {
                     width: nearPoint / (depthOfField + nearPoint) * parent.width
                     height: displayDop.height
-                    color: "lightblue"
+                    color: Theme.secondaryColor
 
                     Label {
                         id: displayDop
                         anchors.right: parent.right
+                        anchors.rightMargin: Theme.paddingSmall
                         text: dopNearPoint.text
                         horizontalAlignment: Text.AlignRight
                         color: "black"
                     }
                 }
-            }
 
-            SectionHeader {
-                text: qsTr("Sensor specifications")
-            }
+                ContextMenu {
 
-            Slider {
-                id: dopCropFactor
-                width: parent.width
-                label: qsTr("Crop factor")
+                    MenuItem {
+                        text: qsTr("Explanation")
 
-                minimumValue: 0
-                maximumValue: photoToolsWindow.dopCropFactorsDouble.length - 1
-                value: 2
-                stepSize: 1
-                valueText: photoToolsWindow.dopCropFactorsDouble[value] + "(" + Math.round(36 / photoToolsWindow.dopCropFactorsDouble[value] * 100) / 100 + "mm)"
+                        onClicked: {
+
+                        }
+                    }
+                }
             }
 
             Row {
-                width: parent.width
+                width: parent.width - Theme.paddingLarge
 
-                ComboBox {
-                    id: dopSensorFormat
-                    width: parent.width / 2
-                    label: qsTr("Format")
-
-                    currentIndex: 1
-                    menu: ContextMenu {
-                        MenuItem { text: "1:1" }
-                        MenuItem { text: "3:2" }
-                        MenuItem { text: "4:3" }
-                    }
+                TextField {
+                    id: dopNearPoint
+                    width: parent.width * 0.3
+                    label: "Near point"
+                    readOnly: true
+                    text: Math.round(nearPoint / 1000 * 1000) / 1000 + "m"
                 }
 
                 TextField {
-                    id: dopSensorResolution
+                    id: dopFarPoint
+                    width: parent.width * 0.3
+                    label: "Far point"
+                    readOnly: true
+                    text: objectDistance < hyperfocalDistance ? Math.round(farPoint / 1000 * 1000) / 1000 + "m" : "∞"
+                }
+
+                TextField {
+                    id: dopDepthOfField
+                    width: parent.width * 0.4
+                    label: "Depth of field"
+                    readOnly: true
+                    text: objectDistance < hyperfocalDistance ? Math.round(depthOfField / 10 * 100) / 100 + "cm" : "∞"
+                }
+            }
+
+            Row {
+                width: parent.width - Theme.paddingLarge
+
+                TextField {
+                    id: dopCircleOfConfusionAbsolute
                     width: parent.width / 2
-                    label: qsTr("Resolution (mpix)")
-                    placeholderText: label
-                    validator: DoubleValidator {
-                        bottom: 0
-                        top: 999
-                    }
-                    inputMethodHints: Qt.ImhFormattedNumbersOnly
-                    text: "24"
+                    label: "Circle of confusion"
+                    readOnly: true
+                    text: Math.round(circleOfConfusionAbsolute * 10000) / 10000 + "mm"
+                }
+
+                TextField {
+                    id: dopHyperfocalDistance
+                    width: parent.width / 2
+                    label: "Hyperfocale distance"
+                    readOnly: true
+                    text: Math.round(hyperfocalDistance / 1000 * 100) / 100 + "m"
                 }
             }
 
@@ -188,54 +206,48 @@ Page {
             }
 
             SectionHeader {
-                text: qsTr("Results")
+                text: qsTr("Sensor specifications")
+            }
+
+            Slider {
+                id: dopCropFactor
+                width: parent.width
+                label: qsTr("Crop factor")
+
+                minimumValue: 0
+                maximumValue: photoToolsWindow.dopCropFactorsDouble.length - 1
+                value: 2
+                stepSize: 1
+                valueText: photoToolsWindow.dopCropFactorsDouble[value] + "(" + Math.round(36 / photoToolsWindow.dopCropFactorsDouble[value] * 100) / 100 + "mm)"
             }
 
             Row {
-                width: parent.width - Theme.paddingLarge
+                width: parent.width
 
-                TextField {
-                    id: dopNearPoint
-                    width: parent.width * 0.3
-                    label: "Near point"
-                    readOnly: true
-                    text: Math.round(nearPoint / 1000 * 1000) / 1000 + "m"
-                }
-
-                TextField {
-                    id: dopFarPoint
-                    width: parent.width * 0.3
-                    label: "Far point"
-                    readOnly: true
-                    text: objectDistance < hyperfocalDistance ? Math.round(farPoint / 1000 * 1000) / 1000 + "m" : "∞"
-                }
-
-                TextField {
-                    id: dopDepthOfField
-                    width: parent.width * 0.4
-                    label: "Depth of field"
-                    readOnly: true
-                    text: objectDistance < hyperfocalDistance ? Math.round(depthOfField / 10 * 100) / 100 + "cm" : "∞"
-                }
-            }
-
-            Row {
-                width: parent.width - Theme.paddingLarge
-
-                TextField {
-                    id: dopCircleOfConfusionAbsolute
+                ComboBox {
+                    id: dopSensorFormat
                     width: parent.width / 2
-                    label: "Circle of confusion"
-                    readOnly: true
-                    text: Math.round(circleOfConfusionAbsolute * 10000) / 10000 + "mm"
+                    label: qsTr("Format")
+
+                    currentIndex: 1
+                    menu: ContextMenu {
+                        MenuItem { text: "1:1" }
+                        MenuItem { text: "3:2" }
+                        MenuItem { text: "4:3" }
+                    }
                 }
 
                 TextField {
-                    id: dopHyperfocalDistance
+                    id: dopSensorResolution
                     width: parent.width / 2
-                    label: "Hyperfocale distance"
-                    readOnly: true
-                    text: Math.round(hyperfocalDistance / 1000 * 100) / 100 + "m"
+                    label: qsTr("Resolution (mpix)")
+                    placeholderText: label
+                    validator: DoubleValidator {
+                        bottom: 0
+                        top: 999
+                    }
+                    inputMethodHints: Qt.ImhFormattedNumbersOnly
+                    text: "24"
                 }
             }
         }
