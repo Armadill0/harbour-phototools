@@ -19,29 +19,47 @@
 
 import QtQuick 2.1
 import Sailfish.Silica 1.0
-import "../localdb.js" as DB
-import "."
 
 Page {
     id: landingPage
     allowedOrientations: Orientation.All
 
-    Column {
-        anchors.horizontalCenter: parent.horizontalCenter
-        spacing: Theme.paddingMedium
+    ListModel {
+        id: pages
 
-        Button {
-            text: "Depth of field"
-            onClicked: pageStack.replace("DepthOfFieldPage.qml")
+        ListElement {
+            title: "Depth of field"
+            page: "DepthOfFieldPage.qml"
         }
-
-        Button {
-            text: "Camera Setup"
-            onClicked: pageStack.replace("CameraSetupPage.qml")
+        ListElement {
+            title: "Camera Setup"
+            page: "CameraSetupPage.qml"
         }
     }
 
-    Component.onCompleted: {
-        DB.initializeDB()
+    SilicaListView {
+        anchors.fill: parent
+
+        VerticalScrollDecorator { }
+
+        PushUpMenu {
+            MenuItem {
+                //: menu item to jump to the application information page
+                text: qsTr("About") + " PhotoTools"
+                onClicked: pageStack.push(Qt.resolvedUrl("AboutPage.qml"))
+            }
+        }
+
+        model: pages
+
+        header: PageHeader {
+            title: qsTr("Start") + " - PhotoTools"
+        }
+
+        delegate: Button {
+            anchors.horizontalCenter: parent.horizontalCenter
+            text: title
+            onClicked: pageStack.push(page)
+        }
     }
 }

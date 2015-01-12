@@ -116,12 +116,19 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>About</source>
-        <extracomment>menu item to jump to the application information page</extracomment>
+        <source>Explanation</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>LandingPage</name>
+    <message>
+        <source>Start</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Explanation</source>
+        <source>About</source>
+        <extracomment>menu item to jump to the application information page</extracomment>
         <translation type="unfinished"></translation>
     </message>
 </context>

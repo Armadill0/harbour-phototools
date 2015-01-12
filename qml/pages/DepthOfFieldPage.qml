@@ -27,16 +27,19 @@ Page {
 
     /*  variables to store all main values
         global default unit for distances is mm (millimeter) */
-    property double aperture: photoToolsWindow.dopAperturesDouble[dopAperture.value]
-    property double sensorFormatProduct: photoToolsWindow.dopSensorFormatProducts[dopSensorFormat.currentIndex]
-    property double sensorFormatHorizontal: photoToolsWindow.dopSensorFormatHorizontals[dopSensorFormat.currentIndex]
-    property double cropFactor: photoToolsWindow.dopCropFactorsDouble[dopCropFactor.value]
+    property double aperture: photoToolsWindow.aperturesDouble[dopAperture.value]
+    property int sensorFormatIndex: dopSensorFormat.currentIndex
+    property double sensorFormatProduct: photoToolsWindow.sensorFormatsX[sensorFormatIndex] * photoToolsWindow.sensorFormatsY[sensorFormatIndex]
+    property double sensorFormatHorizontal: photoToolsWindow.sensorFormatsX[sensorFormatIndex]
+    property int cropFactorIndex: dopCropFactor.value
+    property double cropFactor: photoToolsWindow.cropFactorsDouble[cropFactorIndex]
     property double sensorResolution: parseFloat(dopSensorResolution.text) * 1000000
     property double focalLength: parseFloat(dopFocalLength.text)
     property double objectDistance: parseFloat(dopObjectDistance.text) * 1000
 
     // calculate the depth of field
-    property double circleOfConfusionAbsolute: (36 / cropFactor) / (Math.sqrt(sensorResolution / sensorFormatProduct) * sensorFormatHorizontal) * 2
+    property double sensorSizeX: photoToolsWindow.calcSensorX(sensorFormatIndex, cropFactorIndex)
+    property double circleOfConfusionAbsolute: sensorSizeX / (Math.sqrt(sensorResolution / sensorFormatProduct) * sensorFormatHorizontal) * 2
     //property double circleOfConfusionAbsolute: 0.03
     property double hyperfocalDistance: Math.pow(focalLength, 2) / (aperture * circleOfConfusionAbsolute) + focalLength
     property double nearPoint: objectDistance / ((objectDistance - focalLength) / (hyperfocalDistance - focalLength) + 1)
@@ -49,18 +52,10 @@ Page {
 
         VerticalScrollDecorator { }
 
-        PushUpMenu {
-            MenuItem {
-                //: menu item to jump to the application information page
-                text: qsTr("About") + " PhotoTools"
-                onClicked: pageStack.push(Qt.resolvedUrl("AboutPage.qml"))
-            }
-        }
-
         Column {
             id: column
 
-            width: depthOfFieldPage.width
+            width: parent.width
             spacing: Theme.paddingSmall
 
             PageHeader {
@@ -177,10 +172,10 @@ Page {
                 label: qsTr("Aperture")
 
                 minimumValue: 0
-                maximumValue: photoToolsWindow.dopAperturesDouble.length - 1
+                maximumValue: photoToolsWindow.aperturesDouble.length - 1
                 value: 9
                 stepSize: 1
-                valueText: "f/" + photoToolsWindow.dopAperturesDouble[value]
+                valueText: "f/" + photoToolsWindow.aperturesDouble[value]
             }
 
             Row {
@@ -223,10 +218,10 @@ Page {
                 label: qsTr("Crop factor")
 
                 minimumValue: 0
-                maximumValue: photoToolsWindow.dopCropFactorsDouble.length - 1
+                maximumValue: photoToolsWindow.cropFactorsDouble.length - 1
                 value: 2
                 stepSize: 1
-                valueText: photoToolsWindow.dopCropFactorsDouble[value] + "(" + Math.round(36 / photoToolsWindow.dopCropFactorsDouble[value] * 100) / 100 + "mm)"
+                valueText: photoToolsWindow.cropFactorsDouble[value] + "(" + Math.round(sensorSizeX * 100) / 100 + "mm)"
             }
 
             Row {

@@ -32,21 +32,21 @@ Page {
 
         for (var i = 0; i < cameraList.rows.length; i++) {
             cameraListModel.append({    "id": cameraList.rows.item(i).ID,
-                                        "cameraManufaturerProperty": cameraList.rows.item(i).Manufacturer,
-                                        "cameraModelProperty": cameraList.rows.item(i).Model,
-                                        "cameraSensorResolutionProperty": cameraList.rows.item(i).Resolution,
-                                        "cameraSensorCropProperty": cameraList.rows.item(i).Crop,
-                                        "cameraSensorFormatProperty": cameraList.rows.item(i).Format,
-                                        "cameraStatusProperty": cameraList.rows.item(i).Status})
+                                       "cameraManufaturer": cameraList.rows.item(i).Manufacturer,
+                                       "cameraModel": cameraList.rows.item(i).Model,
+                                       "cameraSensorResolution": cameraList.rows.item(i).Resolution,
+                                       "cameraSensorCrop": cameraList.rows.item(i).Crop,
+                                       "cameraSensorFormat": cameraList.rows.item(i).Format,
+                                       "cameraStatus": cameraList.rows.item(i).Status})
         }
-    }
-
-    ListModel {
-        id: cameraListModel
     }
 
     Component.onCompleted: {
         readCameras()
+    }
+
+    ListModel {
+        id: cameraListModel
     }
 
     Component {
@@ -60,17 +60,20 @@ Page {
                 id: cameraName
                 width: parent.width
 
-                text: cameraManufaturerProperty + " " + cameraModelProperty
+                text: cameraManufaturer + " " + cameraModel
             }
 
             Label {
                 id: cameraProperties
                 width: parent.width
 
-                text: qsTr("Sensor") + ": " + 36 / photoToolsWindow.dopCropFactorsDouble[cameraSensorCropProperty] + "mm, " +
-                      qsTr("Resolution") + ": " + cameraSensorResolutionProperty + "Mpix, " +
-                      qsTr("Crop") + ": " + photoToolsWindow.dopCropFactorsDouble[cameraSensorCropProperty] + ", " +
-                      qsTr("Format") + ": " + photoToolsWindow.dopSensorFormatRelations[cameraSensorFormatProperty]
+                property double sensorX: Math.round(photoToolsWindow.calcSensorX(cameraSensorFormat, cameraSensorCrop) * 100 ) / 100
+                property double sensorY: Math.round(photoToolsWindow.calcSensorY(cameraSensorFormat, cameraSensorCrop) * 100 ) / 100
+
+                text: qsTr("Sensor") + ": " + sensorX + "x" + sensorY + "mm, " +
+                      qsTr("Resolution") + ": " + cameraSensorResolution + "Mpix, " +
+                      qsTr("Crop") + ": " + photoToolsWindow.cropFactorsDouble[cameraSensorCrop] + ", " +
+                      qsTr("Format") + ": " + photoToolsWindow.sensorFormatsX[cameraSensorFormat] + ":" + photoToolsWindow.sensorFormatsY[cameraSensorFormat]
                 color: Theme.secondaryHighlightColor
                 truncationMode: TruncationMode.Elide
             }
