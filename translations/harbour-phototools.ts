@@ -44,6 +44,29 @@
     </message>
 </context>
 <context>
+    <name>CameraSetupPage</name>
+    <message>
+        <source>Camera Setup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sensor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Resolution</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Crop</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Format</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>CoverPage</name>
     <message>
         <source>My Cover</source>

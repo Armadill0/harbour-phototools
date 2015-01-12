@@ -19,25 +19,29 @@
 
 import QtQuick 2.1
 import Sailfish.Silica 1.0
+import "../localdb.js" as DB
+import "."
 
-CoverBackground {
-    Label {
-        id: label
-        anchors.centerIn: parent
-        text: qsTr("My Cover")
+Page {
+    id: landingPage
+    allowedOrientations: Orientation.All
+
+    Column {
+        anchors.horizontalCenter: parent.horizontalCenter
+        spacing: Theme.paddingMedium
+
+        Button {
+            text: "Depth of field"
+            onClicked: pageStack.replace("DepthOfFieldPage.qml")
+        }
+
+        Button {
+            text: "Camera Setup"
+            onClicked: pageStack.replace("CameraSetupPage.qml")
+        }
     }
 
-    CoverActionList {
-        id: coverAction
-
-        CoverAction {
-            iconSource: "image://theme/icon-cover-next"
-        }
-
-        CoverAction {
-            iconSource: "image://theme/icon-cover-pause"
-        }
+    Component.onCompleted: {
+        DB.initializeDB()
     }
 }
-
-

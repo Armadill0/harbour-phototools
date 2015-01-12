@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2014 Thomas Amler
+  Copyright (C) 2015 Thomas Amler
   Contact: Thomas Amler <armadillo@penguinfriends.org>
   All rights reserved.
 
@@ -25,6 +25,8 @@ Page {
     id: depthOfFieldPage
     allowedOrientations: Orientation.All
 
+    /*  variables to store all main values
+        global default unit for distances is mm (millimeter) */
     property double aperture: photoToolsWindow.dopAperturesDouble[dopAperture.value]
     property double sensorFormatProduct: photoToolsWindow.dopSensorFormatProducts[dopSensorFormat.currentIndex]
     property double sensorFormatHorizontal: photoToolsWindow.dopSensorFormatHorizontals[dopSensorFormat.currentIndex]
@@ -33,6 +35,7 @@ Page {
     property double focalLength: parseFloat(dopFocalLength.text)
     property double objectDistance: parseFloat(dopObjectDistance.text) * 1000
 
+    // calculate the depth of field
     property double circleOfConfusionAbsolute: (36 / cropFactor) / (Math.sqrt(sensorResolution / sensorFormatProduct) * sensorFormatHorizontal) * 2
     //property double circleOfConfusionAbsolute: 0.03
     property double hyperfocalDistance: Math.pow(focalLength, 2) / (aperture * circleOfConfusionAbsolute) + focalLength
@@ -59,6 +62,7 @@ Page {
 
             width: depthOfFieldPage.width
             spacing: Theme.paddingSmall
+
             PageHeader {
                 title: qsTr("Depth of field") + " - PhotoTools"
             }
@@ -68,16 +72,19 @@ Page {
             }
 
             Row {
-                width: parent.width
+                width: parent.width - 2 * Theme.paddingLarge
+                x: Theme.paddingLarge
 
                 Rectangle {
+                    id: displayDopDepthOfField
                     width: depthOfField / (depthOfField + nearPoint) * parent.width
-                    height: displayDop.height
+                    height: displayDopNearPointLabel.height
                     color: Theme.highlightColor
 
                     Rectangle {
+                        id: displayDopObjectDistance
                         width: 2
-                        height: displayDop.height
+                        height: displayDopNearPointLabel.height
                         anchors.right: parent.right
                         anchors.rightMargin: (objectDistance - nearPoint) / depthOfField * parent.width -1
                         color: "red"
@@ -85,12 +92,13 @@ Page {
                 }
 
                 Rectangle {
+                    id: displayDopNearPoint
                     width: nearPoint / (depthOfField + nearPoint) * parent.width
-                    height: displayDop.height
+                    height: displayDopNearPointLabel.height
                     color: Theme.secondaryColor
 
                     Label {
-                        id: displayDop
+                        id: displayDopNearPointLabel
                         anchors.right: parent.right
                         anchors.rightMargin: Theme.paddingSmall
                         text: dopNearPoint.text

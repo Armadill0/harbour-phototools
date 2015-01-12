@@ -44,8 +44,9 @@ ApplicationWindow
     // this is needed to calculate the
     property variant dopSensorFormatProducts: [1, 6, 12]
     property variant dopSensorFormatHorizontals: [1, 3, 4]
+    property variant dopSensorFormatRelations: ["1:1", "3:2", "4:3"]
 
-    initialPage: Component { DepthOfFieldPage { } }
+    initialPage: Component { LandingPage { } }
     cover: Qt.resolvedUrl("pages/CoverPage.qml")
 }
 

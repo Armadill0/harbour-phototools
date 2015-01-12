@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2014 Thomas Amler
+  Copyright (C) 2015 Thomas Amler
   Contact: Thomas Amler <armadillo@penguinfriends.org>
   All rights reserved.
 

@@ -23,10 +23,13 @@ OTHER_FILES += qml/harbour-phototools.qml \
     rpm/harbour-phototools.yaml \
     harbour-phototools.desktop \
     qml/pages/DepthOfFieldPage.qml \
-    qml/pages/AboutPage.qml
+    qml/pages/AboutPage.qml \
+    qml/pages/CameraSetupPage.qml \
+    qml/pages/LandingPage.qml \
+    qml/localdb.js
 
 # to disable building translations every time, comment out the
 # following CONFIG line
 CONFIG += sailfishapp_i18n
-TRANSLATIONS += translations/*.ts
+#TRANSLATIONS += translations/*.ts
 
