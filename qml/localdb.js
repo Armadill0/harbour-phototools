@@ -87,3 +87,56 @@ function readCamera(id) {
     }
 }
 
+/*******************************************/
+/*** SQL functions for SETTINGS handling ***/
+/*******************************************/
+
+// insert new setting and return id
+function writeSetting(settingname, settingvalue) {
+    var db = connectDB();
+    var result;
+
+    try {
+        db.transaction(function(tx) {
+            tx.executeSql("INSERT INTO settings (Setting, Value) VALUES (?, ?);", [settingname, settingvalue]);
+            tx.executeSql("COMMIT;");
+            result = tx.executeSql("SELECT Value FROM settings WHERE Setting=?;", [settingname]);
+        });
+
+        return result.rows.item(0).Value;
+    } catch (sqlErr) {
+        return "ERROR";
+    }
+}
+
+// update setting
+function updateSetting(settingname, settingvalue) {
+    var db = connectDB();
+    var result;
+
+    try {
+        db.transaction(function(tx) {
+            tx.executeSql("UPDATE settings SET Value=? WHERE Setting=?;", [settingvalue, settingname]);
+            tx.executeSql("COMMIT;");
+            result = tx.executeSql("SELECT Value FROM settings WHERE Setting=?;", [settingname]);
+        });
+
+        return result.rows.item(0).Value;
+    } catch (sqlErr) {
+        return "ERROR";
+    }
+}
+
+
+// get setting property from database
+function readSetting(settingname) {
+    var db = connectDB();
+    var result;
+
+    db.transaction(function(tx) {
+        result = tx.executeSql("SELECT * FROM settings WHERE Setting=?;", [settingname]);
+    });
+
+    return result.rows.item(0).Value;
+}
+

@@ -25,20 +25,23 @@ Page {
     allowedOrientations: Orientation.All
 
     ListModel {
-        id: pages
+        id: pagesModel
 
         ListElement {
+            //: button to switch to depth of field page
             title: "Depth of field"
             page: "DepthOfFieldPage.qml"
         }
         ListElement {
+            //: button to switch to camera setup page
             title: "Camera Setup"
             page: "CameraSetupPage.qml"
         }
     }
 
-    SilicaListView {
+    SilicaFlickable {
         anchors.fill: parent
+        contentHeight: landingContent.height
 
         VerticalScrollDecorator { }
 
@@ -50,16 +53,30 @@ Page {
             }
         }
 
-        model: pages
+        Column {
+            id: landingContent
+            width: parent.width
+            spacing: Theme.paddingLarge
 
-        header: PageHeader {
-            title: qsTr("Start") + " - PhotoTools"
-        }
+            PageHeader {
+                //: header of start/landing page
+                title: qsTr("Start") + " - PhotoTools"
+            }
 
-        delegate: Button {
-            anchors.horizontalCenter: parent.horizontalCenter
-            text: title
-            onClicked: pageStack.push(page)
+            Repeater {
+                model: pagesModel
+
+                Button {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    text: title
+                    onClicked: pageStack.push(page)
+                }
+            }
+
+            Label {
+                anchors.horizontalCenter: parent.horizontalCenter
+                text: qsTr("Current Camera: ") + ptWindow.currentCameraManufacturer + " " + ptWindow.currentCameraModel
+            }
         }
     }
 }

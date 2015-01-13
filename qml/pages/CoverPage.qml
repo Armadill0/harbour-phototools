@@ -21,21 +21,26 @@ import QtQuick 2.1
 import Sailfish.Silica 1.0
 
 CoverBackground {
-    Label {
-        id: label
-        anchors.centerIn: parent
-        text: qsTr("My Cover")
-    }
 
-    CoverActionList {
-        id: coverAction
+    Rectangle {
+        anchors.fill: parent
+        anchors.margins: Theme.paddingSmall * 2
+        color: "transparent"
 
-        CoverAction {
-            iconSource: "image://theme/icon-cover-next"
-        }
+        Column {
+            spacing: Theme.paddingLarge
+            width: parent.width
 
-        CoverAction {
-            iconSource: "image://theme/icon-cover-pause"
+            Label {
+                id: appTitle
+                anchors.horizontalCenter: parent.horizontalCenter
+                text: "PhotoTools"
+            }
+
+            Label {
+                id: currentCamera
+                text: qsTr("Current camera:\n") + ptWindow.currentCameraManufacturer + " " + ptWindow.currentCameraModel
+            }
         }
     }
 }

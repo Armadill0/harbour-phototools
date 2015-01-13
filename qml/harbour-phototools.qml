@@ -35,7 +35,7 @@ import "pages"
 
 ApplicationWindow
 {
-    id: photoToolsWindow
+    id: ptWindow
 
     // list of available aperture values
     property variant aperturesDouble: [1, 1.1, 1.2, 1.4, 1.6, 1.8, 2, 2.2, 2.5, 2.8, 3.2, 3.5, 4, 4.5, 5.0, 5.6, 6.3, 7.1, 8, 9, 10, 11, 13, 14, 16, 18, 20, 22, 25, 29, 32, 36, 40, 45]
@@ -49,6 +49,15 @@ ApplicationWindow
     property double sensor35mmY: 24
     property double sensor35mmDiagonal: Math.sqrt(Math.pow(sensor35mmX, 2) + Math.pow(sensor35mmY, 2))
 
+    property int defaultCameraIndex
+    property int currentCameraIndex
+
+    property string currentCameraManufacturer
+    property string currentCameraModel
+    property double currentCameraResolution
+    property int currentCameraCrop
+    property int currentCameraFormat
+
     function calcSensorX(sensorFormat, sensorCrop) {
         return (sensorFormatsX[sensorFormat] / Math.sqrt(Math.pow(sensorFormatsX[sensorFormat], 2) + Math.pow(sensorFormatsY[sensorFormat], 2))) * sensor35mmDiagonal / cropFactorsDouble[sensorCrop]
     }
@@ -57,12 +66,27 @@ ApplicationWindow
         return (sensorFormatsY[sensorFormat] / Math.sqrt(Math.pow(sensorFormatsX[sensorFormat], 2) + Math.pow(sensorFormatsY[sensorFormat], 2))) * sensor35mmDiagonal / cropFactorsDouble[sensorCrop]
     }
 
+    function updateCurrentCamera(cameraId) {
+        var camera = DB.readCamera(cameraId);
+
+        if (camera.rows.length === 1) {
+            currentCameraManufacturer = camera.rows.item(0).Manufacturer
+            currentCameraModel = camera.rows.item(0).Model
+            currentCameraResolution = parseFloat(camera.rows.item(0).Resolution)
+            currentCameraCrop = parseInt(camera.rows.item(0).Crop)
+            currentCameraFormat = parseInt(camera.rows.item(0).Format)
+        }
+    }
+
     initialPage: Component { LandingPage { } }
     cover: Qt.resolvedUrl("pages/CoverPage.qml")
 
     Component.onCompleted: {
         DB.initializeDB()
+
+        defaultCameraIndex = parseInt(DB.readSetting("defaultCamera"))
+        currentCameraIndex = defaultCameraIndex
+
+        updateCurrentCamera(currentCameraIndex)
     }
 }
-
-

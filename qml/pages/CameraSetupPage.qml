@@ -67,13 +67,13 @@ Page {
                 id: cameraProperties
                 width: parent.width
 
-                property double sensorX: Math.round(photoToolsWindow.calcSensorX(cameraSensorFormat, cameraSensorCrop) * 100 ) / 100
-                property double sensorY: Math.round(photoToolsWindow.calcSensorY(cameraSensorFormat, cameraSensorCrop) * 100 ) / 100
+                property double sensorX: Math.round(ptWindow.calcSensorX(cameraSensorFormat, cameraSensorCrop) * 100 ) / 100
+                property double sensorY: Math.round(ptWindow.calcSensorY(cameraSensorFormat, cameraSensorCrop) * 100 ) / 100
 
-                text: qsTr("Sensor") + ": " + sensorX + "x" + sensorY + "mm, " +
-                      qsTr("Resolution") + ": " + cameraSensorResolution + "Mpix, " +
-                      qsTr("Crop") + ": " + photoToolsWindow.cropFactorsDouble[cameraSensorCrop] + ", " +
-                      qsTr("Format") + ": " + photoToolsWindow.sensorFormatsX[cameraSensorFormat] + ":" + photoToolsWindow.sensorFormatsY[cameraSensorFormat]
+                text: qsTr("Resolution") + ": " + cameraSensorResolution + "Mpix, " +
+                      qsTr("Crop") + ": " + ptWindow.cropFactorsDouble[cameraSensorCrop] + ", " +
+                      qsTr("Sensor") + ": " + sensorX + "x" + sensorY + "mm, " +
+                      qsTr("Format") + ": " + ptWindow.sensorFormatsX[cameraSensorFormat] + ":" + ptWindow.sensorFormatsY[cameraSensorFormat]
                 color: Theme.secondaryHighlightColor
                 truncationMode: TruncationMode.Elide
             }

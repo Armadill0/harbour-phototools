@@ -20,10 +20,9 @@
 import QtQuick 2.1
 import Sailfish.Silica 1.0
 
-Dialog {
+Page {
     id: aboutPage
     allowedOrientations: Orientation.All
-    canAccept: true
 
     SilicaFlickable {
         id: aboutPhotoTools
@@ -38,11 +37,9 @@ Dialog {
             width: parent.width
             spacing: Theme.paddingSmall
 
-            DialogHeader {
+            PageHeader {
                 //: headline of application information page
                 title: qsTr("About") + " - PhotoTools"
-                //: switch from About back to application
-                acceptText: qsTr("Back")
             }
 
             Image {
@@ -53,7 +50,7 @@ Dialog {
             }
 
             Label {
-                text: "PhotoTools " + version
+                text: "PhotoTools " + Qt.application.version
                 horizontalAlignment: Text.Center
                 width: parent.width - Theme.paddingLarge * 2
                 anchors.horizontalCenter: parent.horizontalCenter

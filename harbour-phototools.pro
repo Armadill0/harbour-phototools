@@ -31,5 +31,7 @@ OTHER_FILES += qml/harbour-phototools.qml \
 # to disable building translations every time, comment out the
 # following CONFIG line
 CONFIG += sailfishapp_i18n
-#TRANSLATIONS += translations/*.ts
+TRANSLATIONS += translations/harbour-phototools.ts
 
+# App version
+DEFINES += APP_VERSION=\"\\\"$${VERSION}\\\"\"

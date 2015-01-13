@@ -19,32 +19,63 @@
 
 import QtQuick 2.1
 import Sailfish.Silica 1.0
+import "../localdb.js" as DB
 
 
 Page {
     id: depthOfFieldPage
     allowedOrientations: Orientation.All
 
+    // variables for current camera specifications
+    property int currentCameraIndex: ptWindow.currentCameraIndex
+    property double currentCameraResolution: ptWindow.currentCameraResolution
+    property int currentCameraCrop: ptWindow.currentCameraCrop
+    property int currentCameraFormat: ptWindow.currentCameraFormat
+
     /*  variables to store all main values
         global default unit for distances is mm (millimeter) */
-    property double aperture: photoToolsWindow.aperturesDouble[dopAperture.value]
-    property int sensorFormatIndex: dopSensorFormat.currentIndex
-    property double sensorFormatProduct: photoToolsWindow.sensorFormatsX[sensorFormatIndex] * photoToolsWindow.sensorFormatsY[sensorFormatIndex]
-    property double sensorFormatHorizontal: photoToolsWindow.sensorFormatsX[sensorFormatIndex]
-    property int cropFactorIndex: dopCropFactor.value
-    property double cropFactor: photoToolsWindow.cropFactorsDouble[cropFactorIndex]
-    property double sensorResolution: parseFloat(dopSensorResolution.text) * 1000000
+    // camera related
+    property double sensorFormatProduct: ptWindow.sensorFormatsX[currentCameraFormat] * ptWindow.sensorFormatsY[currentCameraFormat]
+    property double sensorFormatHorizontal: ptWindow.sensorFormatsX[currentCameraFormat]
+    property double cropFactor: ptWindow.cropFactorsDouble[currentCameraCrop]
+    property double sensorResolution: parseFloat(currentCameraResolution) * 1000000
+
+    // lens related
+    property double aperture: ptWindow.aperturesDouble[dopAperture.value]
     property double focalLength: parseFloat(dopFocalLength.text)
     property double objectDistance: parseFloat(dopObjectDistance.text) * 1000
 
-    // calculate the depth of field
-    property double sensorSizeX: photoToolsWindow.calcSensorX(sensorFormatIndex, cropFactorIndex)
+    // variables to calculate the depth of field
+    property double sensorSizeX: ptWindow.calcSensorX(currentCameraFormat, currentCameraCrop)
     property double circleOfConfusionAbsolute: sensorSizeX / (Math.sqrt(sensorResolution / sensorFormatProduct) * sensorFormatHorizontal) * 2
     //property double circleOfConfusionAbsolute: 0.03
     property double hyperfocalDistance: Math.pow(focalLength, 2) / (aperture * circleOfConfusionAbsolute) + focalLength
     property double nearPoint: objectDistance / ((objectDistance - focalLength) / (hyperfocalDistance - focalLength) + 1)
     property double farPoint: objectDistance / ((focalLength - objectDistance)/(hyperfocalDistance - focalLength) + 1)
     property double depthOfField: farPoint - nearPoint
+
+    function readCameras() {
+        var cameraList = DB.readCameras(null);
+        cameraListModel.clear()
+
+        for (var i = 0; i < cameraList.rows.length; i++) {
+            cameraListModel.append({   "id": cameraList.rows.item(i).ID,
+                                       "cameraManufaturer": cameraList.rows.item(i).Manufacturer,
+                                       "cameraModel": cameraList.rows.item(i).Model,
+                                       "cameraSensorResolution": cameraList.rows.item(i).Resolution,
+                                       "cameraSensorCrop": cameraList.rows.item(i).Crop,
+                                       "cameraSensorFormat": cameraList.rows.item(i).Format,
+                                       "cameraStatus": cameraList.rows.item(i).Status})
+        }
+    }
+
+    Component.onCompleted: {
+        readCameras()
+    }
+
+    ListModel {
+        id: cameraListModel
+    }
 
     SilicaFlickable {
         anchors.fill: parent
@@ -59,10 +90,12 @@ Page {
             spacing: Theme.paddingSmall
 
             PageHeader {
+                //: header of depth of field page
                 title: qsTr("Depth of field") + " - PhotoTools"
             }
 
             SectionHeader {
+                //: start of result section
                 text: qsTr("Results")
             }
 
@@ -105,6 +138,7 @@ Page {
                 ContextMenu {
 
                     MenuItem {
+                        //: explanation of visual presentation of the depth of field
                         text: qsTr("Explanation")
 
                         onClicked: {
@@ -120,7 +154,8 @@ Page {
                 TextField {
                     id: dopNearPoint
                     width: parent.width * 0.3
-                    label: "Near point"
+                    //: start of depth of field from sight of the camera
+                    label: qsTr("Near point")
                     readOnly: true
                     text: Math.round(nearPoint / 1000 * 1000) / 1000 + "m"
                 }
@@ -128,7 +163,8 @@ Page {
                 TextField {
                     id: dopFarPoint
                     width: parent.width * 0.3
-                    label: "Far point"
+                    //: end of depth of field from sight of the camera
+                    label: qsTr("Far point")
                     readOnly: true
                     text: objectDistance < hyperfocalDistance ? Math.round(farPoint / 1000 * 1000) / 1000 + "m" : "∞"
                 }
@@ -136,7 +172,8 @@ Page {
                 TextField {
                     id: dopDepthOfField
                     width: parent.width * 0.4
-                    label: "Depth of field"
+                    //: size of depth of field from near point till far point
+                    label: qsTr("Depth of field")
                     readOnly: true
                     text: objectDistance < hyperfocalDistance ? Math.round(depthOfField / 10 * 100) / 100 + "cm" : "∞"
                 }
@@ -148,7 +185,8 @@ Page {
                 TextField {
                     id: dopCircleOfConfusionAbsolute
                     width: parent.width / 2
-                    label: "Circle of confusion"
+                    //: definition of sharpness of a point of the focused object
+                    label: qsTr("Circle of confusion")
                     readOnly: true
                     text: Math.round(circleOfConfusionAbsolute * 10000) / 10000 + "mm"
                 }
@@ -156,26 +194,29 @@ Page {
                 TextField {
                     id: dopHyperfocalDistance
                     width: parent.width / 2
-                    label: "Hyperfocale distance"
+                    //:
+                    label: qsTr("Hyperfocale distance")
                     readOnly: true
                     text: Math.round(hyperfocalDistance / 1000 * 100) / 100 + "m"
                 }
             }
 
             SectionHeader {
+                //: start of the lens section
                 text: qsTr("Lens data")
             }
 
             Slider {
                 id: dopAperture
                 width: parent.width
+                //: aperture of the used lens
                 label: qsTr("Aperture")
 
                 minimumValue: 0
-                maximumValue: photoToolsWindow.aperturesDouble.length - 1
+                maximumValue: ptWindow.aperturesDouble.length - 1
                 value: 9
                 stepSize: 1
-                valueText: "f/" + photoToolsWindow.aperturesDouble[value]
+                valueText: "f/" + ptWindow.aperturesDouble[value]
             }
 
             Row {
@@ -184,6 +225,7 @@ Page {
                 TextField {
                     id: dopFocalLength
                     width: parent.width * 0.47
+                    //: focal length of the used lens in millimeter
                     label: qsTr("Focal length (mm)")
                     placeholderText: label
                     validator: DoubleValidator {
@@ -197,6 +239,7 @@ Page {
                 TextField {
                     id: dopObjectDistance
                     width: parent.width * 0.53
+                    //: distance to the focused object in meter
                     label: qsTr("Object distance (m)")
                     placeholderText: label
                     validator: DoubleValidator {
@@ -209,48 +252,83 @@ Page {
             }
 
             SectionHeader {
-                text: qsTr("Sensor specifications")
+                //: start of the camera section
+                text: qsTr("Camera data")
             }
 
-            Slider {
-                id: dopCropFactor
-                width: parent.width
-                label: qsTr("Crop factor")
+            ComboBox {
+                id: dopCamera
 
-                minimumValue: 0
-                maximumValue: photoToolsWindow.cropFactorsDouble.length - 1
-                value: 2
-                stepSize: 1
-                valueText: photoToolsWindow.cropFactorsDouble[value] + "(" + Math.round(sensorSizeX * 100) / 100 + "mm)"
-            }
+                label: qsTr("Select camera")
 
-            Row {
-                width: parent.width
-
-                ComboBox {
-                    id: dopSensorFormat
-                    width: parent.width / 2
-                    label: qsTr("Format")
-
-                    currentIndex: 1
-                    menu: ContextMenu {
-                        MenuItem { text: "1:1" }
-                        MenuItem { text: "3:2" }
-                        MenuItem { text: "4:3" }
+                menu: ContextMenu {
+                    Repeater {
+                        model: cameraListModel
+                        MenuItem {
+                            text: cameraManufaturer + " " + cameraModel
+                        }
                     }
                 }
+                description: "Resolution: " + currentCameraResolution + "Mpix, " +
+                             "Crop: " + ptWindow.cropFactorsDouble[currentCameraCrop] + "(" + Math.round(sensorSizeX * 100) / 100 + "mm), " +
+                             "Format: " + ptWindow.sensorFormatsX[currentCameraFormat] + ":" + ptWindow.sensorFormatsY[currentCameraFormat]
+            }
 
-                TextField {
-                    id: dopSensorResolution
-                    width: parent.width / 2
-                    label: qsTr("Resolution (mpix)")
-                    placeholderText: label
-                    validator: DoubleValidator {
-                        bottom: 0
-                        top: 999
+
+
+
+
+
+
+
+            Column {
+                width: parent.width
+                spacing: Theme.paddingSmall
+                visible: false
+
+                Slider {
+                    id: dopCropFactor
+                    width: parent.width
+                    //: crop factor in relation to the 35mm format
+                    label: qsTr("Crop factor")
+
+                    minimumValue: 0
+                    maximumValue: ptWindow.cropFactorsDouble.length - 1
+                    value: currentCameraCrop
+                    stepSize: 1
+                    valueText: ptWindow.cropFactorsDouble[value] + "(" + Math.round(sensorSizeX * 100) / 100 + "mm)"
+                }
+
+                Row {
+                    width: parent.width
+
+                    ComboBox {
+                        id: dopSensorFormat
+                        width: parent.width / 2
+                        //: aspect ratio of the sensor
+                        label: qsTr("Format")
+
+                        currentIndex: currentCameraFormat
+                        menu: ContextMenu {
+                            MenuItem { text: "1:1" }
+                            MenuItem { text: "3:2" }
+                            MenuItem { text: "4:3" }
+                        }
                     }
-                    inputMethodHints: Qt.ImhFormattedNumbersOnly
-                    text: "24"
+
+                    TextField {
+                        id: dopSensorResolution
+                        width: parent.width / 2
+                        //: resolution of the sensor in megapixels
+                        label: qsTr("Resolution (mpix)")
+                        placeholderText: label
+                        validator: DoubleValidator {
+                            bottom: 0
+                            top: 999
+                        }
+                        inputMethodHints: Qt.ImhFormattedNumbersOnly
+                        text: currentCameraResolution
+                    }
                 }
             }
         }
