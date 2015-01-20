@@ -52,31 +52,40 @@ Page {
     Component {
         id: cameraComponent
 
-        Column {
-            width: parent.width - 2 * Theme.paddingLarge
-            x: Theme.paddingLarge
+        ListItem {
+            width: parent.width
+            contentHeight: cameraDetails.height
 
-            Label {
-                id: cameraName
-                width: parent.width
+            Column {
+                id: cameraDetails
+                width: parent.width - 2 * Theme.paddingLarge
+                x: Theme.paddingLarge
 
-                text: cameraManufaturer + " " + cameraModel
+                Label {
+                    id: cameraName
+                    width: parent.width
+
+                    text: cameraManufaturer + " " + cameraModel
+                }
+
+                Label {
+                    id: cameraProperties
+                    width: parent.width
+
+                    property double sensorX: Math.round(ptWindow.calcSensorX(cameraSensorFormat, cameraSensorCrop) * 100 ) / 100
+                    property double sensorY: Math.round(ptWindow.calcSensorY(cameraSensorFormat, cameraSensorCrop) * 100 ) / 100
+
+                    text: qsTr("Resolution") + ": " + cameraSensorResolution + "Mpix\n" +
+                          qsTr("Crop") + ": " + ptWindow.cropFactorsDouble[cameraSensorCrop] + "\n" +
+                          qsTr("Sensor") + ": " + sensorX + "x" + sensorY + "mm\n" +
+                          qsTr("Format") + ": " + ptWindow.sensorFormatsX[cameraSensorFormat] + ":" + ptWindow.sensorFormatsY[cameraSensorFormat]
+                    color: Theme.secondaryHighlightColor
+                    truncationMode: TruncationMode.Elide
+                    maximumLineCount: 1
+                }
             }
 
-            Label {
-                id: cameraProperties
-                width: parent.width
-
-                property double sensorX: Math.round(ptWindow.calcSensorX(cameraSensorFormat, cameraSensorCrop) * 100 ) / 100
-                property double sensorY: Math.round(ptWindow.calcSensorY(cameraSensorFormat, cameraSensorCrop) * 100 ) / 100
-
-                text: qsTr("Resolution") + ": " + cameraSensorResolution + "Mpix, " +
-                      qsTr("Crop") + ": " + ptWindow.cropFactorsDouble[cameraSensorCrop] + ", " +
-                      qsTr("Sensor") + ": " + sensorX + "x" + sensorY + "mm, " +
-                      qsTr("Format") + ": " + ptWindow.sensorFormatsX[cameraSensorFormat] + ":" + ptWindow.sensorFormatsY[cameraSensorFormat]
-                color: Theme.secondaryHighlightColor
-                truncationMode: TruncationMode.Elide
-            }
+            onClicked: cameraProperties.maximumLineCount === 1 ? cameraProperties.maximumLineCount = 10 : cameraProperties.maximumLineCount = 1
         }
     }
 
@@ -89,7 +98,7 @@ Page {
         model: cameraListModel
 
         header: PageHeader {
-            title: qsTr("Camera Setup") + " - PhotoTools"
+            title: qsTr("Camera Setup") + " - " + ptWindow.appName
         }
 
         delegate: cameraComponent

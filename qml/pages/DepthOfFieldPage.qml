@@ -91,7 +91,7 @@ Page {
 
             PageHeader {
                 //: header of depth of field page
-                title: qsTr("Depth of field") + " - PhotoTools"
+                title: qsTr("Depth of field") + " - " + ptWindow.appName
             }
 
             SectionHeader {

@@ -34,12 +34,14 @@ CoverBackground {
             Label {
                 id: appTitle
                 anchors.horizontalCenter: parent.horizontalCenter
-                text: "PhotoTools"
+                text: ptWindow.appName
+                color: Theme.highlightColor
             }
 
             Label {
                 id: currentCamera
                 text: qsTr("Current camera:\n") + ptWindow.currentCameraManufacturer + " " + ptWindow.currentCameraModel
+                font.pixelSize: Theme.fontSizeExtraSmall
             }
         }
     }

@@ -60,7 +60,7 @@ Page {
 
             PageHeader {
                 //: header of start/landing page
-                title: qsTr("Start") + " - PhotoTools"
+                title: qsTr("Start") + " - " + ptWindow.appName
             }
 
             Repeater {

@@ -39,7 +39,7 @@ Page {
 
             PageHeader {
                 //: headline of application information page
-                title: qsTr("About") + " - PhotoTools"
+                title: qsTr("About") + " - " + ptWindow.appName
             }
 
             Image {
@@ -50,7 +50,7 @@ Page {
             }
 
             Label {
-                text: "PhotoTools " + Qt.application.version
+                text: ptWindow.appName + " " + Qt.application.version
                 horizontalAlignment: Text.Center
                 width: parent.width - Theme.paddingLarge * 2
                 anchors.horizontalCenter: parent.horizontalCenter

@@ -49,6 +49,8 @@ ApplicationWindow
     property double sensor35mmY: 24
     property double sensor35mmDiagonal: Math.sqrt(Math.pow(sensor35mmX, 2) + Math.pow(sensor35mmY, 2))
 
+    property string appName: "PhotoTools"
+
     property int defaultCameraIndex
     property int currentCameraIndex
 
