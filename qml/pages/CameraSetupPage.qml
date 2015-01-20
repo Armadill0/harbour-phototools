@@ -98,7 +98,7 @@ Page {
         PullDownMenu {
             MenuItem {
                 text: "Add new camera"
-                onClicked: pageStack.replace("CameraEditPage.qml")
+                onClicked: pageStack.push("CameraEditPage.qml")
             }
         }
 
