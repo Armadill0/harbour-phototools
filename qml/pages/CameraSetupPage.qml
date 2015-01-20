@@ -23,7 +23,7 @@ import "../localdb.js" as DB
 
 
 Page {
-    id: depthOfFieldPage
+    id: cameraSetupPage
     allowedOrientations: Orientation.All
 
     function readCameras() {
@@ -94,6 +94,13 @@ Page {
         anchors.fill: parent
 
         VerticalScrollDecorator { }
+
+        PullDownMenu {
+            MenuItem {
+                text: "Add new camera"
+                onClicked: pageStack.replace("CameraEditPage.qml")
+            }
+        }
 
         model: cameraListModel
 

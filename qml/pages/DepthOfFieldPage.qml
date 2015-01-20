@@ -273,64 +273,6 @@ Page {
                              "Crop: " + ptWindow.cropFactorsDouble[currentCameraCrop] + "(" + Math.round(sensorSizeX * 100) / 100 + "mm), " +
                              "Format: " + ptWindow.sensorFormatsX[currentCameraFormat] + ":" + ptWindow.sensorFormatsY[currentCameraFormat]
             }
-
-
-
-
-
-
-
-
-            Column {
-                width: parent.width
-                spacing: Theme.paddingSmall
-                visible: false
-
-                Slider {
-                    id: dopCropFactor
-                    width: parent.width
-                    //: crop factor in relation to the 35mm format
-                    label: qsTr("Crop factor")
-
-                    minimumValue: 0
-                    maximumValue: ptWindow.cropFactorsDouble.length - 1
-                    value: currentCameraCrop
-                    stepSize: 1
-                    valueText: ptWindow.cropFactorsDouble[value] + "(" + Math.round(sensorSizeX * 100) / 100 + "mm)"
-                }
-
-                Row {
-                    width: parent.width
-
-                    ComboBox {
-                        id: dopSensorFormat
-                        width: parent.width / 2
-                        //: aspect ratio of the sensor
-                        label: qsTr("Format")
-
-                        currentIndex: currentCameraFormat
-                        menu: ContextMenu {
-                            MenuItem { text: "1:1" }
-                            MenuItem { text: "3:2" }
-                            MenuItem { text: "4:3" }
-                        }
-                    }
-
-                    TextField {
-                        id: dopSensorResolution
-                        width: parent.width / 2
-                        //: resolution of the sensor in megapixels
-                        label: qsTr("Resolution (mpix)")
-                        placeholderText: label
-                        validator: DoubleValidator {
-                            bottom: 0
-                            top: 999
-                        }
-                        inputMethodHints: Qt.ImhFormattedNumbersOnly
-                        text: currentCameraResolution
-                    }
-                }
-            }
         }
     }
 }

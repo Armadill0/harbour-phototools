@@ -49,7 +49,7 @@ Page {
             MenuItem {
                 //: menu item to jump to the application information page
                 text: qsTr("About") + " PhotoTools"
-                onClicked: pageStack.push(Qt.resolvedUrl("AboutPage.qml"))
+                onClicked: pageStack.push("AboutPage.qml")
             }
         }
 

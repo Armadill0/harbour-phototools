@@ -26,7 +26,8 @@ OTHER_FILES += qml/harbour-phototools.qml \
     qml/pages/AboutPage.qml \
     qml/pages/CameraSetupPage.qml \
     qml/pages/LandingPage.qml \
-    qml/localdb.js
+    qml/localdb.js \
+    qml/pages/CameraEditPage.qml
 
 # to disable building translations every time, comment out the
 # following CONFIG line
