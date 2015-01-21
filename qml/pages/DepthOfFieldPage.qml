@@ -33,12 +33,13 @@ Page {
     property int currentCameraFormat: ptWindow.currentCameraFormat
 
     /*  variables to store all main values
-        global default unit for distances is mm (millimeter) */
+        GLOBAL UNIT FOR DISTANCES IS MILLIMETER (mm) */
     // camera related
     property double sensorFormatProduct: ptWindow.sensorFormatsX[currentCameraFormat] * ptWindow.sensorFormatsY[currentCameraFormat]
     property double sensorFormatHorizontal: ptWindow.sensorFormatsX[currentCameraFormat]
     property double cropFactor: ptWindow.cropFactorsDouble[currentCameraCrop]
     property double sensorResolution: currentCameraResolution * 1000000
+    property int cocMultiplicator: dopCocMultiplicator.value
 
     // lens related
     property double aperture: ptWindow.aperturesDouble[dopAperture.value]
@@ -47,7 +48,7 @@ Page {
 
     // variables to calculate the depth of field
     property double sensorSizeX: ptWindow.calcSensorX(currentCameraFormat, currentCameraCrop)
-    property double circleOfConfusionAbsolute: sensorSizeX / (Math.sqrt(sensorResolution / sensorFormatProduct) * sensorFormatHorizontal) * 2
+    property double circleOfConfusionAbsolute: sensorSizeX / (Math.sqrt(sensorResolution / sensorFormatProduct) * sensorFormatHorizontal) * cocMultiplicator
     property double hyperfocalDistance: Math.pow(focalLength, 2) / (aperture * circleOfConfusionAbsolute) + focalLength
     property double nearPoint: objectDistance / ((objectDistance - focalLength) / (hyperfocalDistance - focalLength) + 1)
     property double farPoint: objectDistance / ((focalLength - objectDistance)/(hyperfocalDistance - focalLength) + 1)
@@ -206,6 +207,19 @@ Page {
                     readOnly: true
                     text: Math.round(hyperfocalDistance / 1000 * 100) / 100 + "m"
                 }
+            }
+
+            Slider {
+                id: dopCocMultiplicator
+                width: parent.width
+                //: multiplicator for the circle of confusion
+                label: qsTr("Circle of confusion multiplicator")
+
+                minimumValue: 1
+                maximumValue: 10
+                value: 5
+                stepSize: 1
+                valueText: value
             }
 
             SectionHeader {

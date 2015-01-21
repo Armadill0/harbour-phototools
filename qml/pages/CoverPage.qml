@@ -22,6 +22,23 @@ import Sailfish.Silica 1.0
 
 CoverBackground {
 
+    BackgroundItem {
+        anchors.fill: parent
+
+        Image {
+            id: coverBgImage
+            height: parent.height - Theme.paddingLarge * 2
+            width: parent.width - Theme.paddingLarge * 2
+            x: Theme.paddingLarge
+            y: Theme.paddingLarge
+            fillMode: Image.PreserveAspectFit
+            source: "../images/phototools_coverbg.png"
+            opacity: 0.2
+            horizontalAlignment: Image.AlignHCenter
+            verticalAlignment: Image.AlignVCenter
+        }
+    }
+
     Rectangle {
         anchors.fill: parent
         anchors.margins: Theme.paddingSmall * 2
