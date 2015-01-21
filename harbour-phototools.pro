@@ -19,7 +19,6 @@ SOURCES += src/harbour-phototools.cpp
 OTHER_FILES += qml/harbour-phototools.qml \
     qml/pages/CoverPage.qml \
     rpm/harbour-phototools.changes.in \
-    rpm/harbour-phototools.spec \
     rpm/harbour-phototools.yaml \
     harbour-phototools.desktop \
     qml/pages/DepthOfFieldPage.qml \

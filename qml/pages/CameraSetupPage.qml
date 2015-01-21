@@ -26,13 +26,13 @@ Page {
     id: cameraSetupPage
     allowedOrientations: Orientation.All
 
-    function readCameras() {
+    function reloadCameras() {
         var cameraList = DB.readCameras(null);
         cameraListModel.clear()
 
         for (var i = 0; i < cameraList.rows.length; i++) {
             cameraListModel.append({    "id": cameraList.rows.item(i).ID,
-                                       "cameraManufaturer": cameraList.rows.item(i).Manufacturer,
+                                       "cameraManufacturer": cameraList.rows.item(i).Manufacturer,
                                        "cameraModel": cameraList.rows.item(i).Model,
                                        "cameraSensorResolution": cameraList.rows.item(i).Resolution,
                                        "cameraSensorCrop": cameraList.rows.item(i).Crop,
@@ -41,8 +41,22 @@ Page {
         }
     }
 
-    Component.onCompleted: {
-        readCameras()
+    function setDefaultCamera(id) {
+        DB.updateSetting("defaultCamera", id)
+
+        ptWindow.defaultCameraIndex = id
+
+        reloadCameras()
+    }
+
+    onStatusChanged: {
+        switch(status) {
+        case PageStatus.Activating:
+            // reload cameras if page is activating
+            reloadCameras()
+
+            break
+        }
     }
 
     ListModel {
@@ -53,8 +67,30 @@ Page {
         id: cameraComponent
 
         ListItem {
+            id: cameraListItem
             width: parent.width
-            contentHeight: cameraDetails.height
+            contentHeight: menuOpen ? (listContextMenu.height + cameraDetails.height) : cameraDetails.height
+
+            property Item listContextMenu
+            property bool menuOpen: listContextMenu != null && listContextMenu.parent === cameraListItem
+
+            // function to delete camera via the remorseitem
+            function deleteCamera() {
+                cameraRemorse.execute(cameraListItem, qsTr("Deleting") + " '" + cameraManufacturer + " " + cameraModel + "'", function() {
+                    var deleteCam = DB.removeCamera(id)
+
+                    // if camera was successfully removed from database, remove it from camera list
+                    if (deleteCam !== "ERROR")
+                        cameraListModel.remove(index)
+                    else
+                        console.log("ERROR: An error occured while deleting camera from database!")
+                }, 5000)
+            }
+
+            // remorse item for all remorse actions
+            RemorseItem {
+                id: cameraRemorse
+            }
 
             Column {
                 id: cameraDetails
@@ -65,7 +101,7 @@ Page {
                     id: cameraName
                     width: parent.width
 
-                    text: cameraManufaturer + " " + cameraModel
+                    text: cameraManufacturer + " " + cameraModel
                 }
 
                 Label {
@@ -75,17 +111,68 @@ Page {
                     property double sensorX: Math.round(ptWindow.calcSensorX(cameraSensorFormat, cameraSensorCrop) * 100 ) / 100
                     property double sensorY: Math.round(ptWindow.calcSensorY(cameraSensorFormat, cameraSensorCrop) * 100 ) / 100
 
-                    text: qsTr("Resolution") + ": " + cameraSensorResolution + "Mpix\n" +
-                          qsTr("Crop") + ": " + ptWindow.cropFactorsDouble[cameraSensorCrop] + "\n" +
-                          qsTr("Sensor") + ": " + sensorX + "x" + sensorY + "mm\n" +
+                    text: qsTr("Resolution") + ": " + cameraSensorResolution + "Mpix, " +
+                          qsTr("Crop") + ": " + ptWindow.cropFactorsDouble[cameraSensorCrop] + ", " +
+                          qsTr("Sensor") + ": " + sensorX + "x" + sensorY + "mm, " +
                           qsTr("Format") + ": " + ptWindow.sensorFormatsX[cameraSensorFormat] + ":" + ptWindow.sensorFormatsY[cameraSensorFormat]
                     color: Theme.secondaryHighlightColor
                     truncationMode: TruncationMode.Elide
-                    maximumLineCount: 1
                 }
             }
 
-            onClicked: cameraProperties.maximumLineCount === 1 ? cameraProperties.maximumLineCount = 10 : cameraProperties.maximumLineCount = 1
+            // defines the context menu used at each list item
+            Component {
+                id: contextMenuComponent
+                ContextMenu {
+                    id: listMenu
+
+                    MenuItem {
+                        //: context menu item to edit a camera
+                        text: qsTr("Edit")
+                        onClicked: {
+                            // close contextmenu
+                            listContextMenu.hide()
+                            pageStack.push("CameraEditPage.qml", {"cameraId": id})
+                        }
+                    }
+
+                    MenuItem {
+                        //: context menu item to edit a camera
+                        text: qsTr("Set as default camera")
+                        visible: id !== ptWindow.defaultCameraIndex ? true : false
+                        onClicked: {
+                            // close contextmenu
+                            listContextMenu.hide()
+                            setDefaultCamera(id)
+                        }
+                    }
+
+                    MenuItem {
+                        //: context menu item to delete a camera
+                        text: qsTr("Delete")
+                        visible: id !== ptWindow.defaultCameraIndex ? true : false
+                        onClicked: {
+                            // close contextmenu
+                            listContextMenu.hide()
+                            deleteCamera()
+                        }
+                    }
+                }
+            }
+
+            // show context menu
+            onPressAndHold: {
+                if (!listContextMenu) {
+                    listContextMenu = contextMenuComponent.createObject(cameraList)
+                }
+                listContextMenu.show(cameraListItem)
+            }
+
+            onClicked: {
+                ptWindow.updateCurrentCamera(id)
+
+                pageStack.navigateBack()
+            }
         }
     }
 
@@ -105,7 +192,7 @@ Page {
         model: cameraListModel
 
         header: PageHeader {
-            title: qsTr("Camera Setup") + " - " + ptWindow.appName
+            title: qsTr("Select camera") + " - " + ptWindow.appName
         }
 
         delegate: cameraComponent

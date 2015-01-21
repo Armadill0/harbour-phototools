@@ -60,7 +60,7 @@ Page {
 
         for (var i = 0; i < cameraList.rows.length; i++) {
             cameraListModel.append({   "id": cameraList.rows.item(i).ID,
-                                       "cameraManufaturer": cameraList.rows.item(i).Manufacturer,
+                                       "cameraManufacturer": cameraList.rows.item(i).Manufacturer,
                                        "cameraModel": cameraList.rows.item(i).Model,
                                        "cameraSensorResolution": cameraList.rows.item(i).Resolution,
                                        "cameraSensorCrop": cameraList.rows.item(i).Crop,
@@ -71,6 +71,13 @@ Page {
 
     Component.onCompleted: {
         readCameras()
+
+        for (var i = 0; i < cameraListModel.count; i++) {
+            if (cameraListModel.get(i).id === ptWindow.currentCameraIndex) {
+                dopCamera.currentIndex = i
+                dopCamera.currentItem = dopCamera.menu.children[i]
+            }
+        }
     }
 
     ListModel {
@@ -265,7 +272,9 @@ Page {
                     Repeater {
                         model: cameraListModel
                         MenuItem {
-                            text: cameraManufaturer + " " + cameraModel
+                            text: cameraManufacturer + " " + cameraModel
+
+                            onClicked: ptWindow.updateCurrentCamera(id)
                         }
                     }
                 }

@@ -77,6 +77,8 @@ ApplicationWindow
             currentCameraResolution = parseFloat(camera.rows.item(0).Resolution)
             currentCameraCrop = parseInt(camera.rows.item(0).Crop)
             currentCameraFormat = parseInt(camera.rows.item(0).Format)
+
+            currentCameraIndex = cameraId
         }
     }
 

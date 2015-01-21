@@ -83,10 +83,6 @@
 <context>
     <name>CameraSetupPage</name>
     <message>
-        <source>Camera Setup</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Sensor</source>
         <translation type="unfinished"></translation>
     </message>
@@ -100,6 +96,29 @@
     </message>
     <message>
         <source>Format</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <extracomment>context menu item to delete a camera</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Deleting</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit</source>
+        <extracomment>context menu item to edit a camera</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set as default camera</source>
+        <extracomment>context menu item to edit a camera</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select camera</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -176,7 +195,7 @@ size of depth of field from near point till far point</extracomment>
     </message>
     <message>
         <source>Hyperfocale distance</source>
-        <extracomment>label: qsTr(&quot;Hyperfocale distance&quot;) readOnly: true text: Math.round(hyperfocalDistance / 1000 * 100) / 100 + &quot;m&quot; } } SectionHeader { //: start of the lens section text: qsTr(&quot;Lens data&quot;) } Slider { id: dopAperture width: parent.width //: aperture of the used lens label: qsTr(&quot;Aperture&quot;) minimumValue: 0 maximumValue: ptWindow.aperturesDouble.length - 1 value: 9 stepSize: 1 valueText: &quot;f/&quot; + ptWindow.aperturesDouble[value] } Row { width: parent.width TextField { id: dopFocalLength width: parent.width * 0.47 //: focal length of the used lens in millimeter label: qsTr(&quot;Focal length (mm)&quot;) placeholderText: label validator: DoubleValidator { bottom: 0 top: 9999 } inputMethodHints: Qt.ImhFormattedNumbersOnly text: &quot;50&quot; } TextField { id: dopObjectDistance width: parent.width * 0.53 //: distance to the focused object in meter label: qsTr(&quot;Object distance (m)&quot;) placeholderText: label validator: DoubleValidator { bottom: 0 top: 9999 } inputMethodHints: Qt.ImhFormattedNumbersOnly text: &quot;1.2&quot; } } SectionHeader { //: start of the camera section text: qsTr(&quot;Camera data&quot;) } ComboBox { id: dopCamera label: qsTr(&quot;Select camera&quot;) menu: ContextMenu { Repeater { model: cameraListModel MenuItem { text: cameraManufaturer + &quot; &quot; + cameraModel } } } description: &quot;Resolution: &quot; + currentCameraResolution + &quot;Mpix, &quot; + &quot;Crop: &quot; + ptWindow.cropFactorsDouble[currentCameraCrop] + &quot;(&quot; + Math.round(sensorSizeX * 100) / 100 + &quot;mm), &quot; + &quot;Format: &quot; + ptWindow.sensorFormatsX[currentCameraFormat] + &quot;:&quot; + ptWindow.sensorFormatsY[currentCameraFormat] } } } }</extracomment>
+        <extracomment>label: qsTr(&quot;Hyperfocale distance&quot;) readOnly: true text: Math.round(hyperfocalDistance / 1000 * 100) / 100 + &quot;m&quot; } } SectionHeader { //: start of the lens section text: qsTr(&quot;Lens data&quot;) } Slider { id: dopAperture width: parent.width //: aperture of the used lens label: qsTr(&quot;Aperture&quot;) minimumValue: 0 maximumValue: ptWindow.aperturesDouble.length - 1 value: 9 stepSize: 1 valueText: &quot;f/&quot; + ptWindow.aperturesDouble[value] } Row { width: parent.width TextField { id: dopFocalLength width: parent.width * 0.47 //: focal length of the used lens in millimeter label: qsTr(&quot;Focal length (mm)&quot;) placeholderText: label validator: DoubleValidator { bottom: 0 top: 9999 } inputMethodHints: Qt.ImhFormattedNumbersOnly text: &quot;50&quot; } TextField { id: dopObjectDistance width: parent.width * 0.53 //: distance to the focused object in meter label: qsTr(&quot;Object distance (m)&quot;) placeholderText: label validator: DoubleValidator { bottom: 0 top: 9999 } inputMethodHints: Qt.ImhFormattedNumbersOnly text: &quot;1.2&quot; } } SectionHeader { //: start of the camera section text: qsTr(&quot;Camera data&quot;) } ComboBox { id: dopCamera label: qsTr(&quot;Select camera&quot;) menu: ContextMenu { Repeater { model: cameraListModel MenuItem { text: cameraManufacturer + &quot; &quot; + cameraModel onClicked: ptWindow.updateCurrentCamera(id) } } } description: &quot;Resolution: &quot; + currentCameraResolution + &quot;Mpix, &quot; + &quot;Crop: &quot; + ptWindow.cropFactorsDouble[currentCameraCrop] + &quot;(&quot; + Math.round(sensorSizeX * 100) / 100 + &quot;mm), &quot; + &quot;Format: &quot; + ptWindow.sensorFormatsX[currentCameraFormat] + &quot;:&quot; + ptWindow.sensorFormatsY[currentCameraFormat] } } } }</extracomment>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -194,6 +213,14 @@ size of depth of field from near point till far point</extracomment>
     </message>
     <message>
         <source>Current Camera: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Tools</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Information</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

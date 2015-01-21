@@ -20,13 +20,13 @@ function initializeDB() {
                     //tx.executeSql("DROP TABLE cameras");
                     //tx.executeSql("DROP TABLE settings");
                     // create the task and list tables
-                    tx.executeSql("CREATE TABLE IF NOT EXISTS cameras (ID INTEGER PRIMARY KEY AUTOINCREMENT, Manufacturer TEXT, Model TEXT, Status INTEGER, Resolution TEXT, Crop INTEGER, Format INTEGER)");
+                    tx.executeSql("CREATE TABLE IF NOT EXISTS cameras (ID INTEGER PRIMARY KEY AUTOINCREMENT, Manufacturer TEXT, Model TEXT, Nickname TEXT, Status INTEGER, Resolution TEXT, Crop INTEGER, Format INTEGER)");
                     tx.executeSql("CREATE TABLE IF NOT EXISTS settings (ID INTEGER PRIMARY KEY AUTOINCREMENT, Setting TEXT UNIQUE, Value TEXT)");
 
                     // if cameras table are empty (first start), create default camera
                     var result = tx.executeSql("SELECT count(ID) as cID FROM cameras");
                     if (result.rows.item(0)["cID"] == 0) {
-                        tx.executeSql("INSERT INTO cameras (Manufacturer, Model, Status, Resolution, Crop, Format) VALUES ('Default', 'Camera', 0, '24', 2, 1)");
+                        tx.executeSql("INSERT INTO cameras (Manufacturer, Model, Nickname, Status, Resolution, Crop, Format) VALUES ('Default', 'Camera', 'Change me', 1, '24.0', 2, 1)");
                     }
 
                     /****************************/
@@ -85,6 +85,51 @@ function readCamera(id) {
     } catch (sqlErr) {
         return "ERROR" + sqlErr;
     }
+}
+
+// insert new camera and return ID
+function writeCamera(manufacturer, model, status, resolution, crop, format) {
+    var db = connectDB();
+    var result;
+
+    try {
+        db.transaction(function(tx) {
+            tx.executeSql("INSERT INTO cameras (Manufacturer, Model, Status, Resolution, Crop, Format) VALUES (?, ?, ?, ?, ?, ?);", [manufacturer, model, status, resolution, crop, format]);
+            tx.executeSql("COMMIT;");
+            result = tx.executeSql("SELECT ID FROM cameras WHERE Manufacturer=? AND Model=?;", [manufacturer, model]);
+        });
+
+        return result.rows.item(0).ID;
+    } catch (sqlErr) {
+        return "ERROR";
+    }
+}
+
+// update camera by ID
+function updateCamera(id, manufacturer, model, status, resolution, crop, format) {
+    var db = connectDB();
+    var result;
+
+    try {
+        db.transaction(function(tx) {
+            result = tx.executeSql("UPDATE cameras SET Manufacturer=?, Model=?, Status=?, Resolution=?, Crop=?, Format=? WHERE ID=?;", [manufacturer, model, status, resolution, crop, format, id]);
+            tx.executeSql("COMMIT;");
+        });
+
+        return result.rows.count;
+    } catch (sqlErr) {
+       return "ERROR";
+    }
+}
+
+// delete camera from database
+function removeCamera(id) {
+    var db = connectDB();
+
+    db.transaction(function(tx) {
+        tx.executeSql("DELETE FROM cameras WHERE ID=?;", [id]);
+        tx.executeSql("COMMIT;");
+    });
 }
 
 /*******************************************/

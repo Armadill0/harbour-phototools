@@ -48,7 +48,7 @@ Page {
         PushUpMenu {
             MenuItem {
                 //: menu item to jump to the application information page
-                text: qsTr("About") + " PhotoTools"
+                text: qsTr("About") + " " + ptWindow.appName
                 onClicked: pageStack.push("AboutPage.qml")
             }
         }
@@ -63,6 +63,10 @@ Page {
                 title: qsTr("Start") + " - " + ptWindow.appName
             }
 
+            SectionHeader {
+                text: qsTr("Tools")
+            }
+
             Repeater {
                 model: pagesModel
 
@@ -73,7 +77,12 @@ Page {
                 }
             }
 
+            SectionHeader {
+                text: qsTr("Information")
+            }
+
             Label {
+                id: currentCamera
                 anchors.horizontalCenter: parent.horizontalCenter
                 text: qsTr("Current Camera: ") + ptWindow.currentCameraManufacturer + " " + ptWindow.currentCameraModel
             }
