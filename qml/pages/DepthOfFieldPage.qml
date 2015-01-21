@@ -1,6 +1,6 @@
 /*
   Copyright (C) 2015 Thomas Amler
-  Contact: Thomas Amler <armadillo@penguinfriends.org>
+  Contact: Thomas Amler <armadillo [at] penguinfriends.org>
   All rights reserved.
 
   This program is free software: you can redistribute it and/or modify
