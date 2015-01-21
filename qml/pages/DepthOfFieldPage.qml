@@ -38,17 +38,16 @@ Page {
     property double sensorFormatProduct: ptWindow.sensorFormatsX[currentCameraFormat] * ptWindow.sensorFormatsY[currentCameraFormat]
     property double sensorFormatHorizontal: ptWindow.sensorFormatsX[currentCameraFormat]
     property double cropFactor: ptWindow.cropFactorsDouble[currentCameraCrop]
-    property double sensorResolution: parseFloat(currentCameraResolution) * 1000000
+    property double sensorResolution: currentCameraResolution * 1000000
 
     // lens related
     property double aperture: ptWindow.aperturesDouble[dopAperture.value]
-    property double focalLength: parseFloat(dopFocalLength.text)
-    property double objectDistance: parseFloat(dopObjectDistance.text) * 1000
+    property double focalLength: parseFloat(dopFocalLength.text.replace(',', '.'))
+    property double objectDistance: parseFloat(dopObjectDistance.text.replace(',', '.')) * 1000
 
     // variables to calculate the depth of field
     property double sensorSizeX: ptWindow.calcSensorX(currentCameraFormat, currentCameraCrop)
     property double circleOfConfusionAbsolute: sensorSizeX / (Math.sqrt(sensorResolution / sensorFormatProduct) * sensorFormatHorizontal) * 2
-    //property double circleOfConfusionAbsolute: 0.03
     property double hyperfocalDistance: Math.pow(focalLength, 2) / (aperture * circleOfConfusionAbsolute) + focalLength
     property double nearPoint: objectDistance / ((objectDistance - focalLength) / (hyperfocalDistance - focalLength) + 1)
     property double farPoint: objectDistance / ((focalLength - objectDistance)/(hyperfocalDistance - focalLength) + 1)
@@ -187,6 +186,7 @@ Page {
             }
 
             Row {
+                id: dopDetailsRow2
                 width: parent.width - Theme.paddingLarge
 
                 TextField {
@@ -237,10 +237,12 @@ Page {
                     placeholderText: label
                     validator: DoubleValidator {
                         bottom: 0
-                        top: 9999
+                        top: 10000
                     }
-                    inputMethodHints: Qt.ImhFormattedNumbersOnly
-                    text: "50"
+                    inputMethodHints: Qt.ImhDigitsOnly
+                    EnterKey.enabled: errorHighlight === false ? true : false
+                    EnterKey.iconSource: "image://theme/icon-m-enter-next"
+                    EnterKey.onClicked: dopObjectDistance.focus = true
                 }
 
                 TextField {
@@ -251,10 +253,12 @@ Page {
                     placeholderText: label
                     validator: DoubleValidator {
                         bottom: 0
-                        top: 9999
+                        top: 10000
                     }
-                    inputMethodHints: Qt.ImhFormattedNumbersOnly
-                    text: "1.2"
+                    inputMethodHints: Qt.ImhDigitsOnly
+                    EnterKey.enabled: errorHighlight === false ? true : false
+                    EnterKey.iconSource: "image://theme/icon-m-enter-close"
+                    EnterKey.onClicked: focus = false
                 }
             }
 
@@ -280,7 +284,7 @@ Page {
                 }
                 description: "Resolution: " + currentCameraResolution + "Mpix, " +
                              "Crop: " + ptWindow.cropFactorsDouble[currentCameraCrop] + "(" + Math.round(sensorSizeX * 100) / 100 + "mm), " +
-                             "Format: " + ptWindow.sensorFormatsX[currentCameraFormat] + ":" + ptWindow.sensorFormatsY[currentCameraFormat]
+                "Format: " + ptWindow.sensorFormatsX[currentCameraFormat] + ":" + ptWindow.sensorFormatsY[currentCameraFormat]
             }
         }
     }

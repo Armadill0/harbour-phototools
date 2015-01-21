@@ -87,7 +87,7 @@ Dialog {
         checkContent()
     }
 
-    onAccepted: writeCamera(cameraManufacturer.text, cameraModel.text, 1, parseFloat(sensorResolution.text), parseInt(sensorCropFactor.value), parseInt(sensorFormat.currentIndex))
+    onAccepted: writeCamera(cameraManufacturer.text, cameraModel.text, 1, parseFloat(sensorResolution.text.replace(',', '.')), parseInt(sensorCropFactor.value), parseInt(sensorFormat.currentIndex))
 
 
     SilicaFlickable {
@@ -174,10 +174,10 @@ Dialog {
                     label: qsTr("Resolution (mpix)")
                     placeholderText: label
                     validator: DoubleValidator {
-                        bottom: 0
-                        top: 999
+                        bottom: 0.01
+                        top: 1000
                     }
-                    inputMethodHints: Qt.ImhFormattedNumbersOnly
+                    inputMethodHints: Qt.ImhDigitsOnly
                     text: editCameraResolution
                     EnterKey.enabled: errorHighlight === false ? true : false
                     EnterKey.iconSource: "image://theme/icon-m-enter-close"
