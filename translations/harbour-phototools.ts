@@ -203,6 +203,10 @@ size of depth of field from near point till far point</extracomment>
         <extracomment>multiplicator for the circle of confusion</extracomment>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Fill in focal length and object distance to get results!</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>LandingPage</name>

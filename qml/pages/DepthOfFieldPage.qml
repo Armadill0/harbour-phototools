@@ -54,6 +54,8 @@ Page {
     property double farPoint: objectDistance / ((focalLength - objectDistance)/(hyperfocalDistance - focalLength) + 1)
     property double depthOfField: farPoint - nearPoint
 
+    property bool showResults: dopFocalLength.acceptableInput && dopObjectDistance.acceptableInput
+
     function readCameras() {
         var cameraList = DB.readCameras(null);
         cameraListModel.clear()
@@ -106,9 +108,20 @@ Page {
                 text: qsTr("Results")
             }
 
+            Label {
+                id: dopResultError
+                width: parent.width - 2 * Theme.paddingLarge
+                x: Theme.paddingLarge
+                text: qsTr("Fill in focal length and object distance to get results!")
+                color: "red"
+                visible: !showResults
+                wrapMode: Text.WordWrap
+            }
+
             Row {
                 width: parent.width - 2 * Theme.paddingLarge
                 x: Theme.paddingLarge
+                visible: showResults
 
                 Rectangle {
                     id: displayDopDepthOfField
@@ -157,6 +170,7 @@ Page {
 
             Row {
                 width: parent.width - Theme.paddingLarge
+                visible: showResults
 
                 TextField {
                     id: dopNearPoint
@@ -187,8 +201,8 @@ Page {
             }
 
             Row {
-                id: dopDetailsRow2
                 width: parent.width - Theme.paddingLarge
+                visible: showResults
 
                 TextField {
                     id: dopCircleOfConfusionAbsolute
