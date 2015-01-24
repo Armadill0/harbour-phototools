@@ -24,10 +24,24 @@
 #include <sailfishapp.h>
 #include <QScopedPointer>
 #include <QGuiApplication>
+#include <QtGui>
+#include <QtQml>
+#include <QProcess>
+#include <QQuickView>
 
 
 int main(int argc, char *argv[])
 {
+    QProcess appinfo;
+    QString appversion;
+
+    // read app version from rpm database on startup
+    appinfo.start("/bin/rpm", QStringList() << "-qa" << "--queryformat" << "%{version}" << "harbour-phototools");
+    appinfo.waitForFinished(-1);
+    if (appinfo.bytesAvailable() > 0) {
+        appversion = appinfo.readAll();
+    }
+
     // SailfishApp::main() will display "qml/template.qml", if you need more
     // control over initialization, you can use:
     //
@@ -36,11 +50,13 @@ int main(int argc, char *argv[])
     //   - SailfishApp::pathTo(QString) to get a QUrl to a resource file
     //
     // To display the view, call "show()" (will show fullscreen on device).
+    QGuiApplication* app = SailfishApp::application(argc, argv);
 
-    QScopedPointer<QGuiApplication> app(SailfishApp::application(argc, argv));
+    QQuickView* view = SailfishApp::createView();
+    view->rootContext()->setContextProperty("version", appversion);
+    view->setSource(SailfishApp::pathTo("qml/harbour-phototools.qml"));
+    view->show();
 
-    app->setApplicationVersion(QString(APP_VERSION));
-
-    return SailfishApp::main(argc, argv);
+    return app->exec();
 }
 

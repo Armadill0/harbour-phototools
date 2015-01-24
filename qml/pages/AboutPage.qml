@@ -50,7 +50,7 @@ Page {
             }
 
             Label {
-                text: ptWindow.appName + " " + Qt.application.version
+                text: ptWindow.appName + " " + version
                 horizontalAlignment: Text.Center
                 width: parent.width - Theme.paddingLarge * 2
                 anchors.horizontalCenter: parent.horizontalCenter
