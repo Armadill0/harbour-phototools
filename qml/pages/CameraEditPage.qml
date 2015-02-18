@@ -47,6 +47,9 @@ Dialog {
             editCameraResolution = parseFloat(editCam.rows.item(0).Resolution)
             editCameraCrop = parseInt(editCam.rows.item(0).Crop)
             editCameraFormat = parseInt(editCam.rows.item(0).Format)
+            // hack to set the correct camera format
+            sensorFormat.currentIndex = editCameraFormat
+            sensorFormat.currentItem = sensorFormat.menu.children[editCameraFormat]
             editCameraStatus = parseInt(editCam.rows.item(0).Status)
         }
         else {
@@ -147,7 +150,7 @@ Dialog {
                 maximumValue: ptWindow.cropFactorsDouble.length - 1
                 value: editCameraCrop
                 stepSize: 1
-                valueText: ptWindow.cropFactorsDouble[value] + "(" + Math.round(sensorX * 100) / 100 + "mm)"
+                valueText: Math.round(ptWindow.cropFactorsDouble[value] * 100) / 100 + "(" + Math.round(sensorX * 100) / 100 + "mm)"
             }
 
             Row {
@@ -158,12 +161,11 @@ Dialog {
                     width: parent.width / 2
                     //: aspect ratio of the sensor
                     label: qsTr("Format")
-
-                    currentIndex: editCameraFormat
                     menu: ContextMenu {
                         MenuItem { text: "1:1" }
                         MenuItem { text: "3:2" }
                         MenuItem { text: "4:3" }
+                        MenuItem { text: "5:4" }
                     }
                 }
 

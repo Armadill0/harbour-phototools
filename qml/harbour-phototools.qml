@@ -29,10 +29,10 @@ ApplicationWindow
     // list of available aperture values
     property variant aperturesDouble: [1, 1.1, 1.2, 1.4, 1.6, 1.8, 2, 2.2, 2.5, 2.8, 3.2, 3.5, 4, 4.5, 5.0, 5.6, 6.3, 7.1, 8, 9, 10, 11, 13, 14, 16, 18, 20, 22, 25, 29, 32, 36, 40, 45]
     // list of default crop factors
-    property variant cropFactorsDouble: [0.7, 0.8, 1, 1.2, 1.3, 1.5, 1.6, 2, 2.38, 2.7, 4, 4.5, 4.9, 5.6, 6.2, 6.8, 7.2, 8, 8.7]
+    property variant cropFactorsDouble: [0.3, 0.6316, 0.7, 0.8, 1, 1.2, 1.3, 1.5, 1.6, 2, 2.38, 2.7, 4, 4.5, 4.9, 5.6, 6.2, 6.8, 7.2, 8, 8.7]
     // list of sensor formats
-    property variant sensorFormatsX: [1, 3, 4]
-    property variant sensorFormatsY: [1, 2, 3]
+    property variant sensorFormatsX: [1, 3, 4, 5]
+    property variant sensorFormatsY: [1, 2, 3, 4]
     // define 35mm film default dimensions
     property double sensor35mmX: 36
     property double sensor35mmY: 24
@@ -50,11 +50,14 @@ ApplicationWindow
     property int currentCameraFormat
 
     function calcSensorX(sensorFormat, sensorCrop) {
-        return (sensorFormatsX[sensorFormat] / Math.sqrt(Math.pow(sensorFormatsX[sensorFormat], 2) + Math.pow(sensorFormatsY[sensorFormat], 2))) * sensor35mmDiagonal / cropFactorsDouble[sensorCrop]
+        var sensorXLength = sensor35mmX / cropFactorsDouble[sensorCrop]
+        return sensorXLength
     }
 
     function calcSensorY(sensorFormat, sensorCrop) {
-        return (sensorFormatsY[sensorFormat] / Math.sqrt(Math.pow(sensorFormatsX[sensorFormat], 2) + Math.pow(sensorFormatsY[sensorFormat], 2))) * sensor35mmDiagonal / cropFactorsDouble[sensorCrop]
+        var sensorXLength = sensor35mmX / cropFactorsDouble[sensorCrop]
+        var sensorYLength = sensorXLength / sensorFormatsX[sensorFormat] * sensorFormatsY[sensorFormat]
+        return (sensorYLength)
     }
 
     function updateCurrentCamera(cameraId) {
