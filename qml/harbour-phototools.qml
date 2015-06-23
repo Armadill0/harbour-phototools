@@ -27,9 +27,74 @@ ApplicationWindow
     id: ptWindow
 
     // list of available aperture values
-    property variant aperturesDouble: [1, 1.1, 1.2, 1.4, 1.6, 1.8, 2, 2.2, 2.5, 2.8, 3.2, 3.5, 4, 4.5, 5.0, 5.6, 6.3, 7.1, 8, 9, 10, 11, 13, 14, 16, 18, 20, 22, 25, 29, 32, 36, 40, 45]
+    property variant aperturesDouble: [1,1.1, 1.2, 1.4, 1.6, 1.8, 2, 2.2, 2.5, 2.8, 3.2, 3.5, 4, 4.5, 5.0, 5.6, 6.3, 7.1, 8, 9, 10, 11, 13, 14, 16, 18, 20, 22, 25, 29, 32, 36, 40, 45]
     // list of default crop factors
-    property variant cropFactorsDouble: [0.3, 0.6316, 0.7, 0.8, 1, 1.2, 1.3, 1.5, 1.6, 2, 2.38, 2.7, 4, 4.5, 4.9, 5.6, 6.2, 6.8, 7.2, 8, 8.7]
+    property variant cropFactorsDouble: [
+        0.3,
+        0.6316,
+        0.7,
+        0.8,
+        1,
+        1.2,
+        1.3,
+        1.5,
+        1.6,
+        2,
+        2.38,
+        2.7,
+        4,
+        4.5,
+        4.9,
+        5.6,
+        6.2,
+        6.8,
+        7.2,
+        8,
+        8.7]
+    property string cropNoDescription: qsTr("No description")
+    property variant cropDescriptions: [
+        //: sensor format for crop 0.3
+        qsTr("Large format"),
+        //: sensor format for crop 0.6316
+        cropNoDescription,
+        //: sensor format for crop 0.7
+        qsTr("Medium format"),
+        //: sensor format for crop 0.8
+        qsTr("S format"),
+        //: sensor format for crop 1
+        qsTr("35mm full frame"),
+        //: sensor format for crop 1.2
+        cropNoDescription,
+        //: sensor format for crop 1.3
+        qsTr("APS-H"),
+        //: sensor format for crop 1.5
+        qsTr("APS-C (Nikon, Pentax, Sigma)"),
+        //: sensor format for crop 1.6
+        qsTr("APS-C (Canon)"),
+        //: sensor format for crop 2
+        qsTr("(Micro) Four Thirds"),
+        //: sensor format for crop 2.38
+        qsTr("Blackmagic"),
+        //: sensor format for crop 2.7
+        qsTr("Digital Bolex"),
+        //: sensor format for crop 4
+        cropNoDescription,
+        //: sensor format for crop 4.5
+        cropNoDescription,
+        //: sensor format for crop 4.9
+        cropNoDescription,
+        //: sensor format for crop 5.6
+        cropNoDescription,
+        //: sensor format for crop 6.2
+        cropNoDescription,
+        //: sensor format for crop 6.8
+        cropNoDescription,
+        //: sensor format for crop 7.2
+        cropNoDescription,
+        //: sensor format for crop 8
+        cropNoDescription,
+        //: sensor format for crop 8.7
+        cropNoDescription]
     // list of sensor formats
     property variant sensorFormatsX: [1, 3, 4, 5]
     property variant sensorFormatsY: [1, 2, 3, 4]

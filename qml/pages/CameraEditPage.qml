@@ -153,6 +153,14 @@ Dialog {
                 valueText: Math.round(ptWindow.cropFactorsDouble[value] * 100) / 100 + "(" + Math.round(sensorX * 100) / 100 + "mm)"
             }
 
+            Label {
+                property int value: sensorCropFactor.value
+                width: parent.width - 2 * Theme.paddingLarge
+                anchors.horizontalCenter: parent.horizontalCenter
+                visible: ptWindow.cropDescriptions[value] !== undefined
+                text: qsTr("Sensor") + ": " + ptWindow.cropDescriptions[value]
+            }
+
             Row {
                 width: parent.width
 
