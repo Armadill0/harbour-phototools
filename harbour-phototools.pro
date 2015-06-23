@@ -28,6 +28,11 @@ OTHER_FILES += qml/harbour-phototools.qml \
     qml/localdb.js \
     qml/pages/CameraEditPage.qml
 
+localization.files = localization
+localization.path = /usr/share/$${TARGET}
+
+INSTALLS += localization
+
 # to disable building translations every time, comment out the
 # following CONFIG line
 CONFIG += sailfishapp_i18n

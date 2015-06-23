@@ -57,7 +57,7 @@ CoverBackground {
 
             Label {
                 id: currentCamera
-                text: qsTr("Current camera:\n") + ptWindow.currentCameraManufacturer + " " + ptWindow.currentCameraModel
+                text: qsTr("Current camera") + ":\n" + ptWindow.currentCameraManufacturer + " " + ptWindow.currentCameraModel
                 font.pixelSize: Theme.fontSizeExtraSmall
             }
         }

@@ -22,6 +22,8 @@
 #endif
 
 #include <sailfishapp.h>
+#include <QTranslator>
+#include <QLocale>
 #include <QScopedPointer>
 #include <QGuiApplication>
 #include <QtGui>
@@ -51,6 +53,11 @@ int main(int argc, char *argv[])
     //
     // To display the view, call "show()" (will show fullscreen on device).
     QGuiApplication* app = SailfishApp::application(argc, argv);
+    QString locale = QLocale::system().name();
+    QTranslator translator;
+
+    translator.load(locale,SailfishApp::pathTo(QString("localization")).toLocalFile());
+    app->installTranslator(&translator);
 
     QQuickView* view = SailfishApp::createView();
     view->rootContext()->setContextProperty("version", appversion);

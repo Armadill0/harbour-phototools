@@ -87,6 +87,7 @@ Page {
     }
 
     SilicaFlickable {
+        id: dopFlickable
         anchors.fill: parent
         contentHeight: column.height
 
@@ -286,7 +287,10 @@ Page {
                     inputMethodHints: Qt.ImhDigitsOnly
                     EnterKey.enabled: errorHighlight === false ? true : false
                     EnterKey.iconSource: "image://theme/icon-m-enter-close"
-                    EnterKey.onClicked: focus = false
+                    EnterKey.onClicked: {
+                        focus = false
+                        dopFlickable.scrollToTop()
+                    }
                 }
             }
 
@@ -310,9 +314,9 @@ Page {
                         }
                     }
                 }
-                description: "Resolution: " + currentCameraResolution + "Mpix, " +
-                             "Crop: " + ptWindow.cropFactorsDouble[currentCameraCrop] + "(" + Math.round(sensorSizeX * 100) / 100 + "mm), " +
-                "Format: " + ptWindow.sensorFormatsX[currentCameraFormat] + ":" + ptWindow.sensorFormatsY[currentCameraFormat]
+                description: qsTr("Resolution") + ": " + currentCameraResolution + "Mpix, " +
+                             qsTr("Crop") + ": " + ptWindow.cropFactorsDouble[currentCameraCrop] + "(" + Math.round(sensorSizeX * 100) / 100 + "mm), " +
+                qsTr("Format") + ": " + ptWindow.sensorFormatsX[currentCameraFormat] + ":" + ptWindow.sensorFormatsY[currentCameraFormat]
             }
         }
     }

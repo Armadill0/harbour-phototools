@@ -173,7 +173,7 @@ Dialog {
                     id: sensorResolution
                     width: parent.width / 2
                     //: resolution of the sensor in megapixels
-                    label: qsTr("Resolution (mpix)")
+                    label: qsTr("Resolution (Mpix)")
                     placeholderText: label
                     validator: DoubleValidator {
                         bottom: 0.01
