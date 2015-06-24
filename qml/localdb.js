@@ -37,10 +37,33 @@ function initializeDB() {
                 function(tx) {
                     // delete db for clean setup
                     //tx.executeSql("DROP TABLE cameras");
+                    //tx.executeSql("DROP TABLE lenses");
                     //tx.executeSql("DROP TABLE settings");
                     // create the task and list tables
-                    tx.executeSql("CREATE TABLE IF NOT EXISTS cameras (ID INTEGER PRIMARY KEY AUTOINCREMENT, Manufacturer TEXT, Model TEXT, Nickname TEXT, Status INTEGER, Resolution TEXT, Crop INTEGER, Format INTEGER)");
-                    tx.executeSql("CREATE TABLE IF NOT EXISTS settings (ID INTEGER PRIMARY KEY AUTOINCREMENT, Setting TEXT UNIQUE, Value TEXT)");
+                    tx.executeSql("CREATE TABLE IF NOT EXISTS cameras (ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                                  "Manufacturer TEXT, " +
+                                  "Model TEXT, " +
+                                  "Nickname TEXT, " +
+                                  "Status INTEGER, " +
+                                  "Resolution TEXT, " +
+                                  "Crop INTEGER, " +
+                                  "Format INTEGER)");
+                    tx.executeSql("CREATE TABLE IF NOT EXISTS lenses (ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                                  "Manufacturer TEXT, " +
+                                  "Model TEXT, " +
+                                  "Nickname TEXT, " +
+                                  "Status INTEGER, " +
+                                  "FocalLengthMin TEXT, " +
+                                  "FocalLengthMax TEXT, " +
+                                  "ApertureMin TEXT, " +
+                                  "ApertureMax TEXT, " +
+                                  "MaxMagnifications TEXT, " +
+                                  "FilterSize INTEGER, " +
+                                  "MinFocusDistance INTEGER, " +
+                                  "Stabilization TEXT)");
+                    tx.executeSql("CREATE TABLE IF NOT EXISTS settings (ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                                  "Setting TEXT UNIQUE, " +
+                                  "Value TEXT)");
 
                     // if cameras table are empty (first start), create default camera
                     var result = tx.executeSql("SELECT count(ID) as cID FROM cameras");
