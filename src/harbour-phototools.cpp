@@ -36,9 +36,13 @@ int main(int argc, char *argv[])
 {
     QProcess appinfo;
     QString appversion;
+    QString appname = "harbour-phototools";
+
+    QCoreApplication::setOrganizationName(appname);
+    QCoreApplication::setApplicationName(appname);
 
     // read app version from rpm database on startup
-    appinfo.start("/bin/rpm", QStringList() << "-qa" << "--queryformat" << "%{version}" << "harbour-phototools");
+    appinfo.start("/bin/rpm", QStringList() << "-qa" << "--queryformat" << "%{version}" << appname);
     appinfo.waitForFinished(-1);
     if (appinfo.bytesAvailable() > 0) {
         appversion = appinfo.readAll();

@@ -35,10 +35,10 @@ INSTALLS += localization
 
 # to disable building translations every time, comment out the
 # following CONFIG line
-CONFIG += sailfishapp_i18n
+CONFIG += sailfishapp_i18n_idbased
 
 lupdate_only {
     SOURCES = qml/*.qml \
               qml/pages/*.qml
-    TRANSLATIONS = localization/*.ts
+    TRANSLATIONS = localization-sources/*.ts
 }
