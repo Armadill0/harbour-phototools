@@ -44,6 +44,8 @@ int main(int argc, char *argv[])
         appversion = appinfo.readAll();
     }
 
+    QGuiApplication* app = SailfishApp::application(argc, argv);
+
     // SailfishApp::main() will display "qml/template.qml", if you need more
     // control over initialization, you can use:
     //
@@ -52,11 +54,13 @@ int main(int argc, char *argv[])
     //   - SailfishApp::pathTo(QString) to get a QUrl to a resource file
     //
     // To display the view, call "show()" (will show fullscreen on device).
-    QGuiApplication* app = SailfishApp::application(argc, argv);
-    QString locale = QLocale::system().name();
-    QTranslator translator;
 
-    translator.load(locale,SailfishApp::pathTo(QString("localization")).toLocalFile());
+    QTranslator defaultTranslator;
+    defaultTranslator.load("en_US", SailfishApp::pathTo(QString("localization")).toLocalFile());
+    app->installTranslator(&defaultTranslator);
+
+    QTranslator translator;
+    translator.load(QLocale::system().name(), SailfishApp::pathTo(QString("localization")).toLocalFile());
     app->installTranslator(&translator);
 
     QQuickView* view = SailfishApp::createView();

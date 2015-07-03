@@ -212,7 +212,6 @@ Page {
                 TextField {
                     id: dopHyperfocalDistance
                     width: parent.width / 2
-                    //:
                     //% "Hyperfocale distance"
                     label: qsTrId("hpd-label")
                     readOnly: true
