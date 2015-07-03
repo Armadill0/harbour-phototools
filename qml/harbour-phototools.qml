@@ -51,32 +51,43 @@ ApplicationWindow
         7.2,
         8,
         8.7]
-    property string cropNoDescription: qsTr("No description")
+    //% "No description"
+    property string cropNoDescription: qsTrId("no-description-label")
     property variant cropDescriptions: [
         //: sensor format for crop 0.3
-        qsTr("Large format"),
+        //% "Large format"
+        qsTrId("crop-0.3-label"),
         //: sensor format for crop 0.6316
         cropNoDescription,
         //: sensor format for crop 0.7
-        qsTr("Medium format"),
+        //% "Medium format"
+        qsTrId("crop-0.7-label"),
         //: sensor format for crop 0.8
-        qsTr("S format"),
+        //% "S format"
+        qsTrId("crop-0.8-label"),
         //: sensor format for crop 1
-        qsTr("35mm full frame"),
+        //% "35mm full frame"
+        qsTrId("crop-1-label"),
         //: sensor format for crop 1.2
         cropNoDescription,
         //: sensor format for crop 1.3
-        qsTr("APS-H"),
+        //% "APS-H"
+        qsTrId("crop-1.3-label"),
         //: sensor format for crop 1.5
-        qsTr("APS-C (Nikon, Pentax, Sigma)"),
+        //% "APS-C (Nikon, Pentax, Sigma)"
+        qsTrId("crop-1.5-label"),
         //: sensor format for crop 1.6
-        qsTr("APS-C (Canon)"),
+        //% "APS-C (Canon)"
+        qsTrId("crop-1.6-label"),
         //: sensor format for crop 2
-        qsTr("(Micro) Four Thirds"),
+        //% "(Micro) Four Thirds"
+        qsTrId("crop-2-label"),
         //: sensor format for crop 2.38
-        qsTr("Blackmagic"),
+        //% "Blackmagic"
+        qsTrId("crop-2.38-label"),
         //: sensor format for crop 2.7
-        qsTr("Digital Bolex"),
+        //% "Digital Bolex"
+        qsTrId("crop-2.7-label"),
         //: sensor format for crop 4
         cropNoDescription,
         //: sensor format for crop 4.5

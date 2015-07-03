@@ -105,15 +105,21 @@ Dialog {
             spacing: Theme.paddingSmall
 
             DialogHeader {
-                title: cameraId !== 0 ? qsTr("Edit camera") : qsTr("Add new camera")
-                acceptText: qsTr("Save")
-                cancelText: qsTr("Cancel")
+                //% "Edit camera"
+                title: cameraId !== 0 ? qsTrId("edit-camera-label") :
+                                        //% "Add new camera"
+                                        qsTrId("new-camera-label")
+                //% "Save"
+                acceptText: qsTrId("save-label")
+                //% "Cancel"
+                cancelText: qsTrId("cancel-label")
             }
 
             TextField {
                 id: cameraManufacturer
                 width: parent.width
-                label: qsTr("Manufacturer")
+                //% "Manufacturer"
+                label: qsTrId("manufacturer-label")
                 placeholderText: label
                 text: editCameraManufacturer
                 validator: RegExpValidator { regExp: /^.{3,60}$/ }
@@ -128,7 +134,8 @@ Dialog {
             TextField {
                 id: cameraModel
                 width: parent.width
-                label: qsTr("Model")
+                //% "Model"
+                label: qsTrId("model-label")
                 placeholderText: label
                 text: editCameraModel
                 validator: RegExpValidator { regExp: /^.{2,60}$/ }
@@ -144,7 +151,8 @@ Dialog {
                 id: sensorCropFactor
                 width: parent.width
                 //: crop factor in relation to the 35mm format
-                label: qsTr("Crop factor")
+                //% "Crop factor"
+                label: qsTrId("crop-long-label")
 
                 minimumValue: 0
                 maximumValue: ptWindow.cropFactorsDouble.length - 1
@@ -158,7 +166,8 @@ Dialog {
                 width: parent.width - 2 * Theme.paddingLarge
                 anchors.horizontalCenter: parent.horizontalCenter
                 visible: ptWindow.cropDescriptions[value] !== undefined
-                text: qsTr("Sensor") + ": " + ptWindow.cropDescriptions[value]
+                //% "Sensor"
+                text: qsTrId("sensor-label") + ": " + ptWindow.cropDescriptions[value]
             }
 
             Row {
@@ -168,7 +177,8 @@ Dialog {
                     id: sensorFormat
                     width: parent.width / 2
                     //: aspect ratio of the sensor
-                    label: qsTr("Format")
+                    //% "Format"
+                    label: qsTrId("format-label")
                     menu: ContextMenu {
                         MenuItem { text: "1:1" }
                         MenuItem { text: "3:2" }
@@ -181,7 +191,8 @@ Dialog {
                     id: sensorResolution
                     width: parent.width / 2
                     //: resolution of the sensor in megapixels
-                    label: qsTr("Resolution (Mpix)")
+                    //% "Resolution"
+                    label: qsTrId("resolution-label") + " (Mpix)"
                     placeholderText: label
                     validator: DoubleValidator {
                         bottom: 0.01

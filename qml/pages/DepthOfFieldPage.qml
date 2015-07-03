@@ -101,19 +101,22 @@ Page {
 
             PageHeader {
                 //: header of depth of field page
-                title: qsTr("Depth of field") + " - " + ptWindow.appName
+                //% "Depth of field"
+                title: qsTrId("dop-page-title") + " - " + ptWindow.appName
             }
 
             SectionHeader {
                 //: start of result section
-                text: qsTr("Results")
+                //% "Results"
+                text: qsTrId("results-header")
             }
 
             Label {
                 id: dopResultError
                 width: parent.width - 2 * Theme.paddingLarge
                 x: Theme.paddingLarge
-                text: qsTr("Fill in focal length and object distance to get results!")
+                //% "Fill in focal length and object distance to get results!"
+                text: qsTrId("result-hint")
                 color: "red"
                 visible: !showResults
                 wrapMode: Text.WordWrap
@@ -155,18 +158,6 @@ Page {
                         color: "black"
                     }
                 }
-
-                ContextMenu {
-
-                    MenuItem {
-                        //: explanation of visual presentation of the depth of field
-                        text: qsTr("Explanation")
-
-                        onClicked: {
-
-                        }
-                    }
-                }
             }
 
             Row {
@@ -177,7 +168,8 @@ Page {
                     id: dopNearPoint
                     width: parent.width * 0.3
                     //: start of depth of field from sight of the camera
-                    label: qsTr("Near point")
+                    //% "Near point"
+                    label: qsTrId("near-point-label")
                     readOnly: true
                     text: Math.round(nearPoint / 1000 * 1000) / 1000 + "m"
                 }
@@ -186,7 +178,8 @@ Page {
                     id: dopFarPoint
                     width: parent.width * 0.3
                     //: end of depth of field from sight of the camera
-                    label: qsTr("Far point")
+                    //% "Far point"
+                    label: qsTrId("far-point-label")
                     readOnly: true
                     text: objectDistance < hyperfocalDistance ? Math.round(farPoint / 1000 * 1000) / 1000 + "m" : "∞"
                 }
@@ -195,7 +188,8 @@ Page {
                     id: dopDepthOfField
                     width: parent.width * 0.4
                     //: size of depth of field from near point till far point
-                    label: qsTr("Depth of field")
+                    //% "Depth of field"
+                    label: qsTrId("dop-label")
                     readOnly: true
                     text: objectDistance < hyperfocalDistance ? Math.round(depthOfField / 10 * 100) / 100 + "cm" : "∞"
                 }
@@ -209,7 +203,8 @@ Page {
                     id: dopCircleOfConfusionAbsolute
                     width: parent.width / 2
                     //: definition of sharpness of a point of the focused object
-                    label: qsTr("Circle of confusion")
+                    //% "Circle of confusion"
+                    label: qsTrId("coc-label")
                     readOnly: true
                     text: Math.round(circleOfConfusionAbsolute * 10000) / 10000 + "mm"
                 }
@@ -218,7 +213,8 @@ Page {
                     id: dopHyperfocalDistance
                     width: parent.width / 2
                     //:
-                    label: qsTr("Hyperfocale distance")
+                    //% "Hyperfocale distance"
+                    label: qsTrId("hpd-label")
                     readOnly: true
                     text: Math.round(hyperfocalDistance / 1000 * 100) / 100 + "m"
                 }
@@ -228,7 +224,8 @@ Page {
                 id: dopCocMultiplicator
                 width: parent.width
                 //: multiplicator for the circle of confusion
-                label: qsTr("Circle of confusion multiplicator")
+                //% "Circle of confusion multiplicator"
+                label: qsTrId("coc-multiplicator-label")
 
                 minimumValue: 1
                 maximumValue: 10
@@ -239,14 +236,16 @@ Page {
 
             SectionHeader {
                 //: start of the lens section
-                text: qsTr("Lens data")
+                //% "Lens data"
+                text: qsTrId("lens-data-header")
             }
 
             Slider {
                 id: dopAperture
                 width: parent.width
                 //: aperture of the used lens
-                label: qsTr("Aperture")
+                //% "Aperture"
+                label: qsTrId("aperture-label")
 
                 minimumValue: 0
                 maximumValue: ptWindow.aperturesDouble.length - 1
@@ -262,7 +261,8 @@ Page {
                     id: dopFocalLength
                     width: parent.width * 0.47
                     //: focal length of the used lens in millimeter
-                    label: qsTr("Focal length (mm)")
+                    //% "Focal length"
+                    label: qsTrId("focal-length-label") + "(mm)"
                     placeholderText: label
                     validator: DoubleValidator {
                         bottom: 0
@@ -278,7 +278,8 @@ Page {
                     id: dopObjectDistance
                     width: parent.width * 0.53
                     //: distance to the focused object in meter
-                    label: qsTr("Object distance (m)")
+                    //% "Object distance"
+                    label: qsTrId("object-distance-label") + "(m)"
                     placeholderText: label
                     validator: DoubleValidator {
                         bottom: 0
@@ -296,13 +297,15 @@ Page {
 
             SectionHeader {
                 //: start of the camera section
-                text: qsTr("Camera data")
+                //% "Camera data"
+                text: qsTrId("camera-data-header")
             }
 
             ComboBox {
                 id: dopCamera
 
-                label: qsTr("Select camera")
+                //% "Select camera"
+                label: qsTrId("select-camera-label")
 
                 menu: ContextMenu {
                     Repeater {
@@ -314,9 +317,12 @@ Page {
                         }
                     }
                 }
-                description: qsTr("Resolution") + ": " + currentCameraResolution + "Mpix, " +
-                             qsTr("Crop") + ": " + ptWindow.cropFactorsDouble[currentCameraCrop] + "(" + Math.round(sensorSizeX * 100) / 100 + "mm), " +
-                qsTr("Format") + ": " + ptWindow.sensorFormatsX[currentCameraFormat] + ":" + ptWindow.sensorFormatsY[currentCameraFormat]
+                //% "Resolution"
+                description: qsTrId("resolution-label") + ": " + currentCameraResolution + "Mpix, " +
+                             //% "Crop"
+                             qsTrId("crop-label") + ": " + ptWindow.cropFactorsDouble[currentCameraCrop] + "(" + Math.round(sensorSizeX * 100) / 100 + "mm), " +
+                             //% "Format"
+                             qsTrId("formal-label") + ": " + ptWindow.sensorFormatsX[currentCameraFormat] + ":" + ptWindow.sensorFormatsY[currentCameraFormat]
             }
         }
     }

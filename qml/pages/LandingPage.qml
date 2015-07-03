@@ -33,7 +33,8 @@ Page {
         PushUpMenu {
             MenuItem {
                 //: menu item to jump to the application information page
-                text: qsTr("About") + " " + ptWindow.appName
+                //% "About"
+                text: qsTrId("menu-to-about-page") + " " + ptWindow.appName
                 onClicked: pageStack.push("AboutPage.qml")
             }
         }
@@ -45,35 +46,41 @@ Page {
 
             PageHeader {
                 //: header of start/landing page
-                title: qsTr("Start") + " - " + ptWindow.appName
+                //% "Start"
+                title: qsTrId("landing-page-title") + " - " + ptWindow.appName
             }
 
             SectionHeader {
-                text: qsTr("Tools")
+                //% "Tools"
+                text: qsTrId("tools-header")
             }
 
             Button {
                 anchors.horizontalCenter: parent.horizontalCenter
                 //: button to switch to depth of field page
-                text: qsTr("Depth of field")
+                //% "Depth of field"
+                text: qsTrId("button-to-dop-page")
                 onClicked: pageStack.push("DepthOfFieldPage.qml")
             }
 
             Button {
                 anchors.horizontalCenter: parent.horizontalCenter
                 //: button to switch to camera setup page
-                text: qsTr("Camera Setup")
+                //% "Camera Setup"
+                text: qsTrId("button-to-camerasetup-page")
                 onClicked: pageStack.push("CameraSetupPage.qml")
             }
 
             SectionHeader {
-                text: qsTr("Information")
+                //% "Information"
+                text: qsTrId("information-header")
             }
 
             Label {
                 id: currentCamera
                 anchors.horizontalCenter: parent.horizontalCenter
-                text: qsTr("Current Camera") + ": " + ptWindow.currentCameraManufacturer + " " + ptWindow.currentCameraModel
+                //% "Current Camera"
+                text: qsTrId("current-camera-label") + ": " + ptWindow.currentCameraManufacturer + " " + ptWindow.currentCameraModel
             }
         }
     }

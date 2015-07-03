@@ -76,7 +76,8 @@ Page {
 
             // function to delete camera via the remorseitem
             function deleteCamera() {
-                cameraRemorse.execute(cameraListItem, qsTr("Deleting") + " '" + cameraManufacturer + " " + cameraModel + "'", function() {
+                //% "Deleting"
+                cameraRemorse.execute(cameraListItem, qsTrId("deleting-label") + " '" + cameraManufacturer + " " + cameraModel + "'", function() {
                     var deleteCam = DB.removeCamera(id)
 
                     // if camera was successfully removed from database, remove it from camera list
@@ -111,10 +112,14 @@ Page {
                     property double sensorX: Math.round(ptWindow.calcSensorX(cameraSensorFormat, cameraSensorCrop) * 100 ) / 100
                     property double sensorY: Math.round(ptWindow.calcSensorY(cameraSensorFormat, cameraSensorCrop) * 100 ) / 100
 
-                    text: qsTr("Resolution") + ": " + cameraSensorResolution + "Mpix, " +
-                          qsTr("Crop") + ": " + ptWindow.cropFactorsDouble[cameraSensorCrop] + ", " +
-                          qsTr("Sensor") + ": " + sensorX + "x" + sensorY + "mm, " +
-                          qsTr("Format") + ": " + ptWindow.sensorFormatsX[cameraSensorFormat] + ":" + ptWindow.sensorFormatsY[cameraSensorFormat]
+                    //% "Resolution"
+                    text: qsTrId("resolution-label") + ": " + cameraSensorResolution + "Mpix, " +
+                          //% "Crop"
+                          qsTrId("crop-label") + ": " + ptWindow.cropFactorsDouble[cameraSensorCrop] + ", " +
+                          //% "Sensor"
+                          qsTrId("sensor-label") + ": " + sensorX + "x" + sensorY + "mm, " +
+                          //% "Format"
+                          qsTrId("format-label") + ": " + ptWindow.sensorFormatsX[cameraSensorFormat] + ":" + ptWindow.sensorFormatsY[cameraSensorFormat]
                     color: Theme.secondaryHighlightColor
                     truncationMode: TruncationMode.Elide
                 }
@@ -128,7 +133,8 @@ Page {
 
                     MenuItem {
                         //: context menu item to edit a camera
-                        text: qsTr("Edit")
+                        //% "Edit"
+                        text: qsTrId("edit-camera-label")
                         onClicked: {
                             // close contextmenu
                             listContextMenu.hide()
@@ -138,7 +144,8 @@ Page {
 
                     MenuItem {
                         //: context menu item to edit a camera
-                        text: qsTr("Set as default camera")
+                        //% "Set as default camera"
+                        text: qsTrId("default-camera-label")
                         visible: id !== ptWindow.defaultCameraIndex ? true : false
                         onClicked: {
                             // close contextmenu
@@ -149,7 +156,8 @@ Page {
 
                     MenuItem {
                         //: context menu item to delete a camera
-                        text: qsTr("Delete")
+                        //% "Delete"
+                        text: qsTrId("delete-camera-label")
                         visible: id !== ptWindow.defaultCameraIndex ? true : false
                         onClicked: {
                             // close contextmenu
@@ -184,7 +192,8 @@ Page {
 
         PullDownMenu {
             MenuItem {
-                text: "Add new camera"
+                //% "Add new camera"
+                text: qsTrId("new-camera-label")
                 onClicked: pageStack.push("CameraEditPage.qml")
             }
         }
@@ -192,7 +201,8 @@ Page {
         model: cameraListModel
 
         header: PageHeader {
-            title: qsTr("Select camera") + " - " + ptWindow.appName
+            //% "Select camera"
+            title: qsTrId("select-camera-header") + " - " + ptWindow.appName
         }
 
         delegate: cameraComponent

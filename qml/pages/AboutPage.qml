@@ -39,7 +39,8 @@ Page {
 
             PageHeader {
                 //: headline of application information page
-                title: qsTr("About") + " - " + ptWindow.appName
+                //% "About"
+                title: qsTrId("about-page-title") + " - " + ptWindow.appName
             }
 
             Image {
@@ -58,12 +59,14 @@ Page {
 
             SectionHeader {
                 //: headline for application description
-                text: qsTr("Description")
+                //% "Description"
+                text: qsTrId("description-header")
             }
 
             Label {
                 //: application description
-                text: qsTr("A collection of useful tools for daily photography.")
+                //% "A collection of useful tools for daily photography."
+                text: qsTrId("tasklist-description")
                 width: parent.width - Theme.paddingLarge * 2
                 anchors.horizontalCenter: parent.horizontalCenter
                 wrapMode: Text.WordWrap
@@ -72,12 +75,16 @@ Page {
 
             SectionHeader {
                 //: headline for application licensing information
-                text: qsTr("Licensing")
+                //% "Licensing"
+                text: qsTrId("licensing-header")
             }
 
             Label {
                 //: Copyright and license information
-                text: qsTr("Copyright © by") + " Thomas Amler\n" + qsTr("License") + ": GPL v3"
+                //% "Copyright © by"
+                text: qsTrId("copyright-by") +
+                      //% "License"
+                      " Thomas Amler\n" + qsTrId("license-label") + ": GPL v3"
                 width: parent.width - Theme.paddingLarge * 2
                 anchors.horizontalCenter: parent.horizontalCenter
                 font.pixelSize: Theme.fontSizeSmall
@@ -85,7 +92,8 @@ Page {
 
             SectionHeader {
                 //: headline for application project information
-                text: qsTr("Project information")
+                //% "Project information"
+                text: qsTrId("project-header")
                 font.pixelSize: Theme.fontSizeSmall
             }
 
